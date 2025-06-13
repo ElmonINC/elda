@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-=jmluvll%)a7$pw!llm%2^x=#+9o*w_re5287$j#d2=lyk$wa3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['elda.onrender.com', 'localhost', '127.0.0.1:8000', '127.0.0.1']
 
 
 # Application definition
