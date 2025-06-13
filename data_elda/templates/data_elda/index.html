@@ -7,14 +7,24 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>ELDA - Data Management</title>
-        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'data_elda/css/style.css' %}?v={% now 'U' %}">
+        <script src="{% static 'data_elda/js/script.js' %}?v={% now 'U' %}"></script>
     </head>
     <body>
-        <div class="container">
+        <section class="body">
             <h1>ELDA - Data Management</h1>
             <p>Welcome to the ELDA data management system.</p>
-            <ul>
-            </ul>
-        </div>
+            <div class="form">
+                <label>Upload File</label>
+                <input type="file" class="form-el" id="fileInput" onchange="previewFile()">
+                <div class="mt-3" id="preview-area" style="display:none;">
+                    <img id="preview-image" style="max-width: 200px; max-height: 200px;">
+                    <p id="filename-display"></p>
+                </div>
+            </div>
+        </section>  
+        <footer>
+            <p>&copy; 2025 ELDA Project</p> <p> Website designed by <a href="https://elmon.onrender.com">ELMON</a></p>
+        </footer>
     </body>
 </html>
