@@ -1,0 +1,28 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results - ELDA</title>
+    <link rel="stylesheet" href="{% static 'data_elda/css/style.css' %}">
+</head>
+<body>
+    <div class="body">
+        <h1>Search Results for "{{ query }}"</h1>
+        <ul>
+            {% for file in results %}
+                <li><a href="{{ file.file.url }}">{{ file.file.name }}</a> - Rank: {{ file.rank }}</li>
+            {% empty %}
+                <li>No results found.</li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'index' %}">Back to Home</a>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 ELDA Project</p>
+        <p>Website designed by ELMON</p>
+    </footer>
+</body>
+</html>

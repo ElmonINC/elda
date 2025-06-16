@@ -1,0 +1,40 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ELDA - Data Management</title>
+        <link rel="stylesheet" href="{% static 'data_elda/css/style.css' %}?v={% now 'U' %}">
+        <script src="{% static 'data_elda/js/elda.js' %}?v={% now 'U' %}"></script>
+    </head>
+    <body>
+        <section class="body">
+            <h1>ELDA - Data Management</h1>
+            <p>Welcome to the ELDA data management system.</p>
+            <div class="form">
+                <h2>Upload File</h2>
+                <form id="uploadForm" action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" id="fileInput" name="file" accept=".xlsx,.xls,.pdf,.doc,.docx" required>
+                    <div id="preview-container" style="display:none;">
+                        <img id="preview-image" alt="Preview" style="max-width: 200px;">
+                        <p id="filename-display"></p>
+                    </div>
+                    <button type="submit">Upload</button>
+                </form>
+                <h2>Search Files</h2>
+                <form method="get" action="{% url 'search' %}">
+                    <input type="text" name="q" placeholder="Enter keywords or phrases">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+        </section>  
+        <footer>
+            <p>&copy; 2025 ELDA Project</p>
+            <p> Website designed by <a href="https://elmon.onrender.com">ELMON</a></p>
+        </footer>
+    </body>
+</html>
