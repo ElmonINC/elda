@@ -1,7 +1,7 @@
 from django import forms
-from .models import UploadedFile
+from .models import SearchModel
 
 class UploadFileForm(forms.ModelForm):
     class Meta:
-        model = UploadedFile
+        model = SearchModel
         fields = ['file']

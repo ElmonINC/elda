@@ -8,4 +8,6 @@ class SearchModel(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     content = models.TextField(blank=True)
 
+    def __str__(self):
+        return f"File: {self.file.name}, Uploaded at: {self.uploaded_at}" 
 # Create your models here.
