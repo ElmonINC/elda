@@ -4,10 +4,10 @@
     box-sizing: border-box;
 }
 :root {
-    --primary-color: #861919;
+    --primary-color: #883c3c;
     --secondary-color: #f4f4f4;
     --text-color: #333;
-    --footer-bg-color: #202020;
+    --footer-bg-color: #111111;
     --footer-text-color: #fff;
 }
 
@@ -27,6 +27,7 @@ a {
 
 a:hover {
     color: var(--primary-color);
+    font-weight: bold;
 }
 
 .body{
@@ -35,19 +36,43 @@ a:hover {
     text-align: center;
     justify-content: center;
     width: 100%;
-    height: 85%;
+    height: 90%;
 }
+
+form {
+    margin: 20px 0;
+}
+
+input[type="text"] {
+    padding: 5px;
+    margin-right: 10px;
+}
+
+ul {
+    list-style: none;
+    text-align: left;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+li {
+    padding: 10px;
+    background: #fff;
+    margin-bottom: 5px;
+}
+
 footer {
     width: 100%;
-    height: 15%;
+    height: 10%;
     background-color: var(--footer-bg-color);
     color: var(--footer-text-color);
     display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: center;
 }
 footer p {
     margin: 0;
     margin-right: 2em;
     font-size: 14px;
-    margin-top: 7em;
 }
