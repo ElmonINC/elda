@@ -1,6 +1,6 @@
 from django.db import models
 
-class UploadedFile(models.Model):
+class SearchModel(models.Model):
     """
     Model to store uploaded files.
     """

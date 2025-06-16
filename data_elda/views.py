@@ -1,9 +1,10 @@
 # Create your views here.
 from django.shortcuts import render, redirect
 from .forms import UploadFileForm
-from .models import UploadedFile
+from django.db.models import Q
+from django.views.decorators.csrf import csrf_exempt
+from .models import SearchModel
 from .utils import extract_text
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 
 
 
@@ -24,13 +25,27 @@ def upload_file(request):
         form = UploadFileForm()
     return render(request, 'index.html', {'form': form})
 
+# def search(request):
+#     query = request.GET.get('q')
+#     if query:
+#         search_query = SearchQuery(query, search_type='websearch')
+#         results = UploadedFile.objects.annotate(
+#             rank=SearchRank(SearchVector('content', 'file'), search_query)
+#         ).filter(rank__gte=0.1).order_by('-rank')
+#     else:
+#         results = UploadedFile.objects.none()
+#     return render(request, 'search_results.html', {'results': results, 'query': query})
+
 def search(request):
-    query = request.GET.get('q')
+    query = request.GET.get('q', '')
     if query:
-        search_query = SearchQuery(query, search_type='websearch')
-        results = UploadedFile.objects.annotate(
-            rank=SearchRank(SearchVector('content', 'file'), search_query)
-        ).filter(rank__gte=0.1).order_by('-rank')
+        results = SearchModel.objects.filter(
+            Q(content__icontains=query) |
+            Q(file__icontains=query)
+        )
     else:
-        results = UploadedFile.objects.none()
-    return render(request, 'search_results.html', {'results': results, 'query': query})
+        results = []
+    return render(request, 'search.html', {
+        'results': results,
+        'query': query
+    })
