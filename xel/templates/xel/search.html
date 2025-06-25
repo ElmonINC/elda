@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+{% block content %}
+<h2>Search for Name</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Search</button>
+</form>
+
+{% if searched %}
+    <h3>Results for {{ first_name }} {{ last_name }}</h3>
+    {% if entries %}
+        <ul>
+        {% for entry in entries %}
+            <li>
+                File: {{ entry.excel_file.file.name }}<br>
+                Name: {{ entry.first_name }} - {{ entry.last_name }}<br>
+                Status: {{ entry.status }}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Name not found in any list.</p>
+    {% endif %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} Elda {% endblock %}</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <p>Welcome, {{ user.username }}. <a href="{% url 'logout' %}"> Logout </a></p>
+    {% else %}
+        <p> <a href="{% url 'login' %}"> Login </a> | <a href="{% url 'xel:register' %}">Register</a></p>
+    {% endif %}
+    
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
