@@ -1,5 +1,6 @@
 # xel/forms.py
 from django import forms
+from .models import ExcelFile
 
 class NameSearchForm(forms.Form):
     first_name = forms.CharField(max_length=255, label="First Name")
@@ -7,7 +8,7 @@ class NameSearchForm(forms.Form):
 
 class ExcelUploadForm(forms.ModelForm):
     class Meta:
-        model = None  # This should be set to your ExcelFile model
+        model = ExcelFile 
         fields = ['file']  # Assuming 'file' is the field for the uploaded file
         widgets = {
             'file': forms.ClearableFileInput(attrs={'multiple': False}),

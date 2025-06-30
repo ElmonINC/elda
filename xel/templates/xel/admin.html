@@ -1,0 +1,22 @@
+{% extends "xel/layout.html" %}
+
+{% block content %}
+<h2>Admin Content Management</h2>
+<h3>Uploaded Excel Files</h3>
+<ul>
+    {% for file in files %}
+        <li>{{ file.file.name }} (uploaded at {{ file.uploaded_at }})</li>
+    {% empty %}
+        <li> No files uploaded.</li>
+    {% endfor %}
+</ul>
+<h3>Name Entries</h3>
+<ul>
+    {% for entry in entries %}
+        <li>{{ entry.first_name }} {{ entry.last_name }} - {{ entry.status }}</li>
+    {% empty %}
+        <li>No entries found.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'upload_xel' %}">Upload New Excel File</a>
+{% endblock %}

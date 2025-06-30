@@ -4,7 +4,10 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse_lazy
 from django.views import generic
 from .forms import NameSearchForm, ExcelUploadForm
-from .models import NameEntry
+from .models import NameEntry, ExcelFile
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth import logout as auth_logout
+from django.contrib.auth import authenticate, login
 
 class RegisterView(generic.CreateView):
     form_class = UserCreationForm
@@ -13,6 +16,7 @@ class RegisterView(generic.CreateView):
 
 def index(request):
     return render(request, 'xel/index.html')
+
 
 def register(request):
     if request.method == 'POST':
@@ -23,6 +27,11 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
+
+@login_required
+def logout(request):
+    auth_logout(request)  # Use Django's built-in logout function
+    return redirect('index')
 
 @login_required
 def search_name(request):
@@ -48,6 +57,19 @@ def search_name(request):
     context = {'form': form, 'searched': False}
     return render(request, 'xel/search.html', context)
 
+def admin_login(request):
+    error = None
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_superuser:
+            login(request, user)
+            return redirect('admin')  # Redirect to your admin content page
+        else:
+            error = "Invalid credentials or not an admin."
+    return render(request, 'xel/admin_login.html', {'error': error})
+
 @user_passes_test(lambda u: u.is_superuser)
 def upload_xel(request):
     if request.method == 'POST':
@@ -58,3 +80,12 @@ def upload_xel(request):
     else:
         form = ExcelUploadForm()
     return render(request, 'xel/upload.html', {'form': form})
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_xel(request):
+    files = ExcelFile.objects.all()
+    entries = NameEntry.objects.all()
+    return render(request, 'xel/admin.html', {
+        'files': files,
+        'entries': entries,
+    })
