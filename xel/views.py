@@ -76,7 +76,7 @@ def upload_xel(request):
         form = ExcelUploadForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('search_name')  # Redirect to search page after upload
+            return redirect('admin')  # Redirect to search page after upload
     else:
         form = ExcelUploadForm()
     return render(request, 'xel/upload.html', {'form': form})
