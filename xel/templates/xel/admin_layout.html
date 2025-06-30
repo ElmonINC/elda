@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'xel/css/styles.css' %}">
-    <script src="{% static 'xel/js/xel.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'xel/css/style.css' %}?v={% now 'U' %}">
+    <script src="{% static 'xel/js/xel.js' %}?v={% now 'U'}" defer></script>
     <title>{% block title %} Elda {% endblock %}</title>
 </head>
 <body>
@@ -14,7 +14,7 @@
         {% if user.is_authenticated %}
             Welcome, {{ user.username }}. 
         {% else %}
-            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'admin_login' %}">Login</a>
         {% endif %}
     </div>
     {% block content %}
