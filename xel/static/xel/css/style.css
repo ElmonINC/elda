@@ -3,3 +3,30 @@
     margin: 0;
     box-sizing: border-box;
 }
+
+#upload-form {
+    display: none;
+    margin-top: 20px;
+    padding: 16px;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    border-radius: 6px;
+    max-width: 400px;
+}
+#hide-upload-{
+    display: inline-block;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+#hide-upload:hover {
+    color: #0056b3;
+}
+.success {
+    color: green;
+}
+.error {
+    color: red;
+}
