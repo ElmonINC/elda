@@ -1,5 +1,4 @@
-
-#upload-form {
+#upload_form {
     display: none;
     margin-top: 20px;
     padding: 16px;
@@ -8,7 +7,7 @@
     border-radius: 6px;
     max-width: 400px;
 }
-#hide-upload-{
+#hide_upload {
     display: inline-block;
     margin-top: 16px;
     margin-bottom: 8px;
@@ -16,7 +15,7 @@
     cursor: pointer;
     text-decoration: underline;
 }
-#hide-upload:hover {
+#hide_upload:hover {
     color: #0056b3;
 }
 .success {

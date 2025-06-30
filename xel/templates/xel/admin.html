@@ -20,12 +20,14 @@
     {% endfor %}
 </ul>
 <a href="#" id="hide_upload">Upload New Excel File</a>
+
 <div id="upload_form" style="display: none;">
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ upload_form.as_p }}
         <button type="submit">Upload</button>
     </form> 
+
     {% if form.errors %}
         <div class="error">
             <p>Please correct the errors below:</p>
@@ -40,6 +42,27 @@
                 {% endfor %}
             </ul>
         </div>
+    {% endif %}
+        
+    {% if success_message %}
+        <div class="success">
+            <p>{{ success_message }}</p>
+        </div>
+    {% endif %}
+
+    {% if error_message %}
+        <div class="error">
+            <p>{{ error_message }}</p>
+        </div>
+    {% endif %}
+
+    {% if uploaded_files %}
+        <h3>Uploaded Files</h3>
+        <ul>
+            {% for file in uploaded_files %}
+                <li>{{ file.file.name }} ({{ file.uploaded_at }})</li>
+            {% endfor %}
+        </ul>
     {% endif %}
 </div>
  <script src="{% static 'xel/js/xel.js' %}" defer></script>

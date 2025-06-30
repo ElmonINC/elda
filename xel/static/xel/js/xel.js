@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-    var Btn = document.getElementById('hide-upload');
-    var form = document.getElementById('upload-form');
+    var Btn = document.getElementById('hide_upload');
+    var form = document.getElementById('upload_form');
     if (Btn && form) {
         Btn.addEventListener('click', function(e) {
             e.preventDefault();

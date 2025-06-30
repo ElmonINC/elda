@@ -71,21 +71,18 @@ def admin_login(request):
     return render(request, 'xel/admin_login.html', {'error': error})
 
 @user_passes_test(lambda u: u.is_superuser)
-def upload_xel(request):
-    if request.method == 'POST':
-        form = ExcelUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('admin')  # Redirect to search page after upload
-    else:
-        form = ExcelUploadForm()
-    return render(request, 'xel/upload.html', {'form': form})
-
-@user_passes_test(lambda u: u.is_superuser)
 def admin_xel(request):
     files = ExcelFile.objects.all()
     entries = NameEntry.objects.all()
+    upload_form = ExcelUploadForm()
+    if request.method == 'POST':
+        upload_form = ExcelUploadForm(request.POST, request.FILES)
+        if upload_form.is_valid():
+            upload_form.save()
+            return redirect('admin')
     return render(request, 'xel/admin.html', {
         'files': files,
         'entries': entries,
+        'upload_form': upload_form,
+        'searched': False,
     })
