@@ -1,0 +1,23 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'xel/css/styles.css' %}">
+    <script src="{% static 'xel/js/xel.js' %}"></script>
+    <title>{% block title %} Elda {% endblock %}</title>
+</head>
+<body>
+    <div>
+        {% if user.is_authenticated %}
+            Welcome, {{ user.username }}. 
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </div>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
