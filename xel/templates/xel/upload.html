@@ -1,9 +1,13 @@
-{% extends "xel/index.html" %}
-{% load static %}
-
-{% block title %}Register - Elda{% endblock %}
+{% extends "index.html" %}
 {% block content %}
-<h2>Register</h2>
+<h2>Upload Excel File</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Upload</button>
+</form>
+{% endblock %}
+
 {% if form.errors %}
     <div class="error">
         <p>Please correct the errors below:</p>
@@ -19,6 +23,7 @@
         </ul>
     </div>
 {% endif %}
+
 {% if success_message %}
     <div class="success">
         <p>{{ success_message }}</p>
@@ -31,9 +36,12 @@
     </div>
 {% endif %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
-</form>
+{% if uploaded_files %}
+    <h3>Uploaded Files</h3>
+    <ul>
+        {% for file in uploaded_files %}
+            <li>{{ file.file.name }} ({{ file.uploaded_at }})</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 {% endblock %}

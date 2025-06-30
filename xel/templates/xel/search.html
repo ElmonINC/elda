@@ -1,4 +1,4 @@
-{% extends "index.html" %}
+{% extends "xel/index.html" %}
 {% block content %}
 <h2>Search for Name</h2>
 <form method="post">
@@ -10,15 +10,17 @@
 {% if searched %}
     <h3>Results for {{ first_name }} {{ last_name }}</h3>
     {% if entries %}
-        <ul>
-        {% for entry in entries %}
-            <li>
-                File: {{ entry.excel_file.file.name }}<br>
-                Name: {{ entry.first_name }} - {{ entry.last_name }}<br>
-                Status: {{ entry.status }}
-            </li>
-        {% endfor %}
-        </ul>
+        <div style="max-height: 300px; overflow-y: auto;">
+            <ul>
+                {% for entry in entries %}
+                    <li>
+                        <strong>File:</strong> {{ entry.excel_file.file.name }}<br>
+                        <strong>Name:</strong> {{ entry.first_name }} {{ entry.last_name }}<br>
+                        <strong>Status:</strong> {{ entry.status }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     {% else %}
         <p>Name not found in any list.</p>
     {% endif %}
