@@ -81,6 +81,8 @@ def admin_login(request):
             error = "Invalid credentials or not an admin."
     return render(request, 'xel/admin_login.html', {'error': error})
 
+
+@user_passes_test(lambda u: u.is_superuser)
 def handle_uploaded_file(excel_file_instance):
     df = pd.read_excel(excel_file_instance.file.path)
     if 'Narration' in df.columns:
