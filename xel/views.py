@@ -4,10 +4,13 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse_lazy
 from django.views import generic
 from .forms import NameSearchForm, ExcelUploadForm
-from .models import NameEntry, ExcelFile
+from .models import NameEntry, ExcelFile, NarrationEntry
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import authenticate, login
+import pandas as pd
+from difflib import SequenceMatcher
+
 
 class RegisterView(generic.CreateView):
     form_class = UserCreationForm
@@ -33,6 +36,7 @@ def logout(request):
     auth_logout(request)  # Use Django's built-in logout function
     return redirect('index')
 
+
 @login_required
 def search_name(request):
     if request.method == 'POST':
@@ -40,6 +44,17 @@ def search_name(request):
         if form.is_valid():
             first_name = form.cleaned_data['first_name'].strip()
             last_name = form.cleaned_data['last_name'].strip()
+            search_term = f"{first_name} {last_name}".strip()
+
+            # Narration similarity search
+            narration_results = []
+            for entry in NarrationEntry.objects.all():
+                ratio = SequenceMatcher(None, search_term.lower(), entry.narration.lower()).ratio()
+                if search_term.lower() in entry.narration.lower() or ratio > 0.5:
+                    narration_results.append((entry, ratio))
+            narration_results.sort(key=lambda x: x[1], reverse=True)
+            narration_results = [entry for entry, _ in narration_results]
+
             entries = NameEntry.objects.filter(
                 first_name__iexact=first_name,
                 last_name__iexact=last_name
@@ -50,6 +65,7 @@ def search_name(request):
                 'searched': True,
                 'first_name': first_name,
                 'last_name': last_name,
+                'narration_results': narration_results,
             }
             return render(request, 'xel/search.html', context)
     else:
@@ -69,6 +85,16 @@ def admin_login(request):
         else:
             error = "Invalid credentials or not an admin."
     return render(request, 'xel/admin_login.html', {'error': error})
+
+@login_required
+def handle_uploaded_file(excel_file_instance):
+    df = pd.read_excel(excel_file_instance.file.path)
+    if 'narration' in df.columns:
+        for narration in df['narration'].dropna():
+            NarrationEntry.objects.create(
+                excel_file=excel_file_instance,
+                narration=str(narration)
+            )
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin_xel(request):
