@@ -2,9 +2,8 @@
 from django import forms
 from .models import ExcelFile
 
-class NameSearchForm(forms.Form):
-    first_name = forms.CharField(max_length=255, label="First Name")
-    last_name = forms.CharField(max_length=255, label="Last Name")
+class NarrationSearchForm(forms.Form):
+    query = forms.CharField(label="Search Narration", max_length=255)
 
 class ExcelUploadForm(forms.ModelForm):
     class Meta:

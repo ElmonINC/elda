@@ -3,12 +3,13 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse_lazy
 from django.views import generic
-from .forms import NameSearchForm, ExcelUploadForm
+from .forms import NarrationSearchForm, ExcelUploadForm
 from .models import NameEntry, ExcelFile, NarrationEntry
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import authenticate, login
 import pandas as pd
+import re
 from difflib import SequenceMatcher
 
 
@@ -36,42 +37,36 @@ def logout(request):
     auth_logout(request)  # Use Django's built-in logout function
     return redirect('index')
 
-
 @login_required
-def search_name(request):
+def search_narration(request):
+    results = []
+    query = ""
     if request.method == 'POST':
-        form = NameSearchForm(request.POST)
+        form = NarrationSearchForm(request.POST)
         if form.is_valid():
-            first_name = form.cleaned_data['first_name'].strip()
-            last_name = form.cleaned_data['last_name'].strip()
-            search_term = f"{first_name} {last_name}".strip()
-
-            # Narration similarity search
-            narration_results = []
+            query = form.cleaned_data['query'].strip()
             for entry in NarrationEntry.objects.all():
-                ratio = SequenceMatcher(None, search_term.lower(), entry.narration.lower()).ratio()
-                if search_term.lower() in entry.narration.lower() or ratio > 0.5:
-                    narration_results.append((entry, ratio))
-            narration_results.sort(key=lambda x: x[1], reverse=True)
-            narration_results = [entry for entry, _ in narration_results]
-
-            entries = NameEntry.objects.filter(
-                first_name__iexact=first_name,
-                last_name__iexact=last_name
-            )
-            context = {
-                'form': form,
-                'entries': entries,
-                'searched': True,
-                'first_name': first_name,
-                'last_name': last_name,
-                'narration_results': narration_results,
-            }
-            return render(request, 'xel/search.html', context)
+                narration_text = entry.narration or ""
+                ratio = SequenceMatcher(None, query.lower(), narration_text.lower()).ratio()
+                if query.lower() in narration_text.lower() or ratio > 0.5:
+                    # Extract everything after "by" (case-insensitive)
+                    match = re.search(r'by\s*(.*)', narration_text, re.IGNORECASE)
+                    after_by = match.group(1).strip() if match else ""
+                    results.append({
+                        'full_narration': narration_text,
+                        'after_by': after_by,
+                        'similarity': ratio,
+                    })
+            # Sort by similarity (highest first)
+            results.sort(key=lambda x: x['similarity'], reverse=True)
     else:
-        form = NameSearchForm()
-    context = {'form': form, 'searched': False}
-    return render(request, 'xel/search.html', context)
+        form = NarrationSearchForm()
+    return render(request, 'xel/search.html', {
+        'form': form,
+        'results': results,
+        'query': query,
+        'searched': request.method == 'POST',
+    })
 
 def admin_login(request):
     error = None
@@ -86,11 +81,10 @@ def admin_login(request):
             error = "Invalid credentials or not an admin."
     return render(request, 'xel/admin_login.html', {'error': error})
 
-@login_required
 def handle_uploaded_file(excel_file_instance):
     df = pd.read_excel(excel_file_instance.file.path)
-    if 'narration' in df.columns:
-        for narration in df['narration'].dropna():
+    if 'Narration' in df.columns:
+        for narration in df['Narration'].dropna():
             NarrationEntry.objects.create(
                 excel_file=excel_file_instance,
                 narration=str(narration)

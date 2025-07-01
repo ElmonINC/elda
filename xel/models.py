@@ -19,3 +19,6 @@ class NameEntry(models.Model):
 class NarrationEntry(models.Model):
     excel_file = models.ForeignKey(ExcelFile, on_delete=models.CASCADE)
     narration = models.TextField()
+
+    def __str__(self):
+        return self.narration

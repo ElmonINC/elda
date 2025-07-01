@@ -1,6 +1,7 @@
 {% extends "xel/layout.html" %}
+
 {% block content %}
-<h2>Search for Name</h2>
+<h2>Search Narration</h2>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
@@ -8,30 +9,18 @@
 </form>
 
 {% if searched %}
-    <h3>Results for {{ first_name }} {{ last_name }}</h3>
-    {% if narration_results %}
-        <h3> Narration Matches</h3>
+    <h3>Results for "{{ query }}"</h3>
+    {% if results %}
         <ol>
-            {% for narration in narration_results %}
-            <li> {{ narration.narration }}</li>
-            {% endfor %}
+        {% for res in results %}
+            <li>
+                <strong>Full Narration:</strong> {{ res.full_narration }}<br>
+                <strong>After "by":</strong> {{ res.after_by }}
+            </li>
+        {% endfor %}
         </ol>
-    {% endif %}
-    
-    {% if entries %}
-        <div style="max-height: 300px; overflow-y: auto;">
-            <ul>
-                {% for entry in entries %}
-                    <li>
-                        <strong>File:</strong> {{ entry.excel_file.file.name }}<br>
-                        <strong>Name:</strong> {{ entry.first_name }} {{ entry.last_name }}<br>
-                        <strong>Status:</strong> {{ entry.status }}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
     {% else %}
-        <p>Name not found in any list.</p>
+        <p>No matches found.</p>
     {% endif %}
 {% endif %}
 {% endblock %}
