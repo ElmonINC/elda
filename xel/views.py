@@ -9,7 +9,6 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import authenticate, login
 import pandas as pd
-import re
 from difflib import SequenceMatcher
 
 class RegisterView(generic.CreateView):
