@@ -11,14 +11,6 @@
         <li> No files uploaded.</li>
     {% endfor %}
 </ul>
-<h3>Name Entries</h3>
-<ul>
-    {% for entry in entries %}
-        <li>{{ entry.first_name }} {{ entry.last_name }} - {{ entry.status }}</li>
-    {% empty %}
-        <li>No entries found.</li>
-    {% endfor %}
-</ul>
 <a href="#" id="hide_upload">Upload New Excel File</a>
 
 <div id="upload_form" style="display: none;">
@@ -67,3 +59,4 @@
 </div>
  <script src="{% static 'xel/js/xel.js' %}" defer></script>
 {% endblock %}
+

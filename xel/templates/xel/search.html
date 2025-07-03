@@ -1,4 +1,6 @@
 {% extends "xel/layout.html" %}
+{% load static %}
+
 
 {% block content %}
 <h2>Search Narration</h2>
@@ -8,19 +10,18 @@
     <button type="submit">Search</button>
 </form>
 
-{% if searched %}
-    <h3>Results for "{{ query }}"</h3>
-    {% if results %}
-        <ol>
-        {% for res in results %}
-            <li>
-                <strong>Full Narration:</strong> {{ res.full_narration }}<br>
-                <strong>After "by":</strong> {{ res.after_by }}
-            </li>
-        {% endfor %}
-        </ol>
-    {% else %}
-        <p>No matches found.</p>
+<div id="results_box" style="display: {% if show_results %}block{% else %}none{% endif %}; margin-top:20px;">
+    {% if show_results %}
+        <h3>Results for "{{ query }}"</h3>
+        {% if results %}
+            <ol>
+            {% for res in results %}
+                <li>{{ res }}</li>
+            {% endfor %}
+            </ol>
+        {% else %}
+            <p>No matches found.</p>
+        {% endif %}
     {% endif %}
-{% endif %}
+</div>
 {% endblock %}

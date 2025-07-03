@@ -4,14 +4,13 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse_lazy
 from django.views import generic
 from .forms import NarrationSearchForm, ExcelUploadForm
-from .models import NameEntry, ExcelFile, NarrationEntry
+from .models import ExcelFile, NarrationEntry
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import authenticate, login
 import pandas as pd
 import re
 from difflib import SequenceMatcher
-
 
 class RegisterView(generic.CreateView):
     form_class = UserCreationForm
@@ -20,7 +19,6 @@ class RegisterView(generic.CreateView):
 
 def index(request):
     return render(request, 'xel/index.html')
-
 
 def register(request):
     if request.method == 'POST':
@@ -37,37 +35,6 @@ def logout(request):
     auth_logout(request)  # Use Django's built-in logout function
     return redirect('index')
 
-@login_required
-def search_narration(request):
-    results = []
-    query = ""
-    if request.method == 'POST':
-        form = NarrationSearchForm(request.POST)
-        if form.is_valid():
-            query = form.cleaned_data['query'].strip()
-            for entry in NarrationEntry.objects.all():
-                narration_text = entry.narration or ""
-                ratio = SequenceMatcher(None, query.lower(), narration_text.lower()).ratio()
-                if query.lower() in narration_text.lower() or ratio > 0.5:
-                    # Extract everything after "by" (case-insensitive)
-                    match = re.search(r'by\s*(.*)', narration_text, re.IGNORECASE)
-                    after_by = match.group(1).strip() if match else ""
-                    results.append({
-                        'full_narration': narration_text,
-                        'after_by': after_by,
-                        'similarity': ratio,
-                    })
-            # Sort by similarity (highest first)
-            results.sort(key=lambda x: x['similarity'], reverse=True)
-    else:
-        form = NarrationSearchForm()
-    return render(request, 'xel/search.html', {
-        'form': form,
-        'results': results,
-        'query': query,
-        'searched': request.method == 'POST',
-    })
-
 def admin_login(request):
     error = None
     if request.method == 'POST':
@@ -81,30 +48,65 @@ def admin_login(request):
             error = "Invalid credentials or not an admin."
     return render(request, 'xel/admin_login.html', {'error': error})
 
-
-@user_passes_test(lambda u: u.is_superuser)
 def handle_uploaded_file(excel_file_instance):
     df = pd.read_excel(excel_file_instance.file.path)
-    if 'Narration' in df.columns:
-        for narration in df['Narration'].dropna():
-            NarrationEntry.objects.create(
-                excel_file=excel_file_instance,
-                narration=str(narration)
-            )
+    if 'Narration' not in df.columns:
+        excel_file_instance.delete()
+        raise ValueError('Excel file missing required column: "Narration"')
+    for narration in df['Narration'].dropna():
+        NarrationEntry.objects.create(
+            excel_file=excel_file_instance,
+            narration=str(narration)
+        )
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin_xel(request):
     files = ExcelFile.objects.all()
-    entries = NameEntry.objects.all()
     upload_form = ExcelUploadForm()
+    error = None
     if request.method == 'POST':
         upload_form = ExcelUploadForm(request.POST, request.FILES)
         if upload_form.is_valid():
-            upload_form.save()
-            return redirect('admin')
+            try:
+                excel_file_instance = upload_form.save()
+                handle_uploaded_file(excel_file_instance)
+                return redirect('admin')
+            except Exception as e:
+                error = str(e)
     return render(request, 'xel/admin.html', {
         'files': files,
-        'entries': entries,
         'upload_form': upload_form,
-        'searched': False,
+        'error': error,
+    })
+
+@login_required
+def search_narration(request):
+    results = []
+    query = ""
+    show_results = False
+    if request.method == 'POST':
+        form = NarrationSearchForm(request.POST)
+        if form.is_valid():
+            query = form.cleaned_data['query'].strip()
+            query_words = query.lower().split()
+            for entry in NarrationEntry.objects.all():
+                narration_text = entry.narration or ""
+                narration_lower = narration_text.lower()
+                # Check if all query words are present or similar in the narration cell
+                match_count = 0
+                for word in query_words:
+                    if word in narration_lower or SequenceMatcher(None, word, narration_lower).ratio() > 0.7:
+                        match_count += 1
+                if match_count == len(query_words):
+                    results.append(narration_text)
+            # Remove duplicates, sort alphabetically
+            results = sorted(list(set(results)), key=lambda x: x.lower())
+            show_results = True
+    else:
+        form = NarrationSearchForm()
+    return render(request, 'xel/search.html', {
+        'form': form,
+        'results': results,
+        'query': query,
+        'show_results': show_results,
     })
