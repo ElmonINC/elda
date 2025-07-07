@@ -1,22 +1,27 @@
+{% extends "xel/layout.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'xel/css/styles.css' %}">
-    <title>{% block title %} Elda - Excel Name Search {% endblock %}</title>
-</head>
-<body>
-    <div>
-        {% if user.is_authenticated %}
-            Welcome, {{ user.username }}. <a href="{% url 'logout' %}">Logout</a>
+
+{% block content %}
+<h2>Search Narration</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Search</button>
+</form>
+
+<div id="results_box" class="{% if show_results %}show{% else %}hide{% endif %}" style="margin-top:20px;">
+    {% if show_results %}
+        <h3>Results for "{{ query }}"</h3>
+        {% if results %}
+            <ol>
+            {% for res in results %}
+                <li>{{ res }}</li>
+            {% endfor %}
+            </ol>
         {% else %}
-            <a href="{% url 'login' %}">Login</a> | <a href="{% url 'register' %}">Register</a>
+            <p>No matches found.</p>
         {% endif %}
-    </div>
-    {% block content %}
-    {% endblock %}
-</body>
-</html>
+    {% endif %}
+</div>
+{% endblock %}
