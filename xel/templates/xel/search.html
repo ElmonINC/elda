@@ -10,7 +10,7 @@
     <button type="submit">Search</button>
 </form>
 
-<div id="results_box" style="display: {% if show_results %}block{% else %}none{% endif %}; margin-top:20px;">
+<div id="results_box" class="{% if show_results %}show{% else %}hide{% endif %}" style="margin-top:20px;">
     {% if show_results %}
         <h3>Results for "{{ query }}"</h3>
         {% if results %}
