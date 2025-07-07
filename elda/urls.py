@@ -16,12 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.conf import settings
-from django.conf.urls.static import static
+from xel import views as xel_views
 
 urlpatterns = [
+    path('', xel_views.index, name='index'),  # Redirect to xel index
     path('admin/', admin.site.urls),
     path('data_elda/', include('data_elda.urls')),
     path('xel/', include('xel.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
