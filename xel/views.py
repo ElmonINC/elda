@@ -1,15 +1,20 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse_lazy
 from django.views import generic
+from django.http import JsonResponse
+from django.contrib.auth import logout as auth_logout
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth import authenticate, login
+from django.views.decorators.http import require_POST
 from .forms import NarrationSearchForm, ExcelUploadForm
 from .models import ExcelFile, NarrationEntry
-from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth import logout as auth_logout
-from django.contrib.auth import authenticate, login
 import pandas as pd
+import logging
+logger = logging.getLogger(__name__)
 from difflib import SequenceMatcher
+
 
 class RegisterView(generic.CreateView):
     form_class = UserCreationForm
@@ -58,26 +63,6 @@ def handle_uploaded_file(excel_file_instance):
             narration=str(narration)
         )
 
-@user_passes_test(lambda u: u.is_superuser)
-def admin_xel(request):
-    files = ExcelFile.objects.all()
-    upload_form = ExcelUploadForm()
-    error = None
-    if request.method == 'POST':
-        upload_form = ExcelUploadForm(request.POST, request.FILES)
-        if upload_form.is_valid():
-            try:
-                excel_file_instance = upload_form.save()
-                handle_uploaded_file(excel_file_instance)
-                return redirect('admin')
-            except Exception as e:
-                error = str(e)
-    return render(request, 'xel/admin.html', {
-        'files': files,
-        'upload_form': upload_form,
-        'error': error,
-    })
-
 @login_required
 def search_narration(request):
     results = []
@@ -109,3 +94,36 @@ def search_narration(request):
         'query': query,
         'show_results': show_results,
     })
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_xel(request):
+    files = ExcelFile.objects.all()
+    upload_form = ExcelUploadForm()
+    error = None
+    if request.method == 'POST':
+        if not request.FILES:
+            error = "No file uploaded or file is too large."
+            # Pass this error to your template
+        else:
+            upload_form = ExcelUploadForm(request.POST, request.FILES)
+            if upload_form.is_valid():
+                try:
+                    excel_file_instance = upload_form.save()
+                    handle_uploaded_file(excel_file_instance)
+                    return redirect('admin')
+                except Exception as e:
+                    error = str(e)
+    return render(request, 'xel/admin.html', {
+        'files': files,
+        'upload_form': upload_form,
+        'error': error,
+    })
+
+@user_passes_test(lambda u: u.is_superuser)
+@require_POST
+def delete_excel_file(request, file_stored):
+    logger.debug(f"Attempting to delete file with ID: {file_stored}")
+    file = get_object_or_404(ExcelFile, id=file_stored)
+    file.delete()
+    logger.debug(f"File with ID: {file_stored} deleted successfully.")
+    return JsonResponse({'success': True, 'file_id': file_stored})

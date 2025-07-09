@@ -1,12 +1,14 @@
-{% extends "xel/admin_layout.html" %}
-{% load static %}
+{% extends 'xel/admin_layout.html' %}
 
 {% block content %}
 <h2>Admin Content Management</h2>
 <h3>Uploaded Excel Files</h3>
 <ul>
     {% for file in files %}
-        <li>{{ file.file.name }} (uploaded at {{ file.uploaded_at }})</li>
+        <div class="file-row" id="file-row-{{ file.id }}">
+            <span>{{ file.file.name }}</span>
+            <button onclick="deleteFile({{ file.id }})">Delete</button>
+        </div>
     {% empty %}
         <li> No files uploaded.</li>
     {% endfor %}
@@ -20,32 +22,24 @@
         <button type="submit">Upload</button>
     </form> 
 
+ <!-- Display success or error messages -->
     {% if form.errors %}
         <div class="error">
             <p>Please correct the errors below:</p>
             <ul>
-                {% for field in form %}
-                    {% for error in field.errors %}
-                        <li>{{ field.label }}: {{ error }}</li>
-                    {% endfor %}
-                {% endfor %}
-                {% for error in form.non_field_errors %}
-                    <li>{{ error }}</li>
+                {% for field, errors in form.errors.items %}
+                    <li>{{ field }}: {{ errors|join:", " }}</li>
                 {% endfor %}
             </ul>
         </div>
     {% endif %}
         
     {% if success_message %}
-        <div class="success">
-            <p>{{ success_message }}</p>
-        </div>
+        <div class="success">{{ success_message }}</div>
     {% endif %}
 
     {% if error_message %}
-        <div class="error">
-            <p>{{ error_message }}</p>
-        </div>
+        <div class="error">{{ error_message }}</div>
     {% endif %}
 
     {% if uploaded_files %}
@@ -57,6 +51,5 @@
         </ul>
     {% endif %}
 </div>
- <script src="{% static 'xel/js/xel.js' %}" defer></script>
 {% endblock %}
 

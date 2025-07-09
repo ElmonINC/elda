@@ -12,3 +12,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+function deleteFile(fileId) {
+    if (confirm('Are you sure you want to delete this file?')) {
+        fetch(`/xel/delete_file/${fileId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ file_id: fileId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById(`file-row-${fileId}`).remove();
+                alert('File deleted successfully.');
+            } else {
+                alert('Error deleting file: ' + data.error);
+            }
+        });
+    }
+}

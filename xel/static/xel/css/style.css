@@ -30,3 +30,46 @@
 .hide {
     display: none;
 }
+
+.file-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(116, 116, 116);
+    width: 30rem;
+}
+.menu {
+    position: relative;
+}
+.dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    z-index: 100;
+    background: #fff;
+    border: 1px solid #ccc;
+}
+.dots-btn {
+    /* Add any desired button styling here */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+    font-size: 11px;
+    color: #333;
+}
+.dropdown button {
+    color: red;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.dropdown button:hover {
+    background: #a0a0a0;
+}
+
+/*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}

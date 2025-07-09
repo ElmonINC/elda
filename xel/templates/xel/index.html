@@ -4,11 +4,7 @@
 
 {% block content %}
 <h2>Search Narration</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Search</button>
-</form>
+
 
 <div id="results_box" class="{% if show_results %}show{% else %}hide{% endif %}" style="margin-top:20px;">
     {% if show_results %}
