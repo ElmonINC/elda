@@ -37,6 +37,21 @@
     justify-content: space-between;
     background-color: rgb(116, 116, 116);
     width: 30rem;
+    padding: 8px;
+    margin-bottom: 4px;
+}
+.delete-file{
+    color: red;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+.delete-file:hover {
+    background-color: #f5c6cb;
+    color: #721c24;
 }
 .menu {
     position: relative;

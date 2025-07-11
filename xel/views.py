@@ -54,9 +54,6 @@ def admin_login(request):
 
 def handle_uploaded_file(excel_file_instance):
     df = pd.read_excel(excel_file_instance.file.path)
-    if 'Narration' not in df.columns:
-        excel_file_instance.delete()
-        raise ValueError('Excel file missing required column: "Narration"')
     for narration in df['Narration'].dropna():
         NarrationEntry.objects.create(
             excel_file=excel_file_instance,
@@ -98,32 +95,30 @@ def search_narration(request):
 @user_passes_test(lambda u: u.is_superuser)
 def admin_xel(request):
     files = ExcelFile.objects.all()
-    upload_form = ExcelUploadForm()
     error = None
     if request.method == 'POST':
-        if not request.FILES:
-            error = "No file uploaded or file is too large."
-            # Pass this error to your template
-        else:
-            upload_form = ExcelUploadForm(request.POST, request.FILES)
-            if upload_form.is_valid():
-                try:
-                    excel_file_instance = upload_form.save()
-                    handle_uploaded_file(excel_file_instance)
-                    return redirect('admin')
-                except Exception as e:
-                    error = str(e)
+        upload_form = ExcelUploadForm(request.POST, request.FILES)
+        if upload_form.is_valid():
+            excel_file_instance = upload_form.save()
+            try:
+                handle_uploaded_file(excel_file_instance)
+            except Exception as e:
+                error = str(e)
+                excel_file_instance.delete()  # Rollback if error occurs
+    else:
+        upload_form = ExcelUploadForm()
     return render(request, 'xel/admin.html', {
         'files': files,
         'upload_form': upload_form,
         'error': error,
     })
 
+
 @user_passes_test(lambda u: u.is_superuser)
 @require_POST
-def delete_excel_file(request, file_stored):
-    logger.debug(f"Attempting to delete file with ID: {file_stored}")
-    file = get_object_or_404(ExcelFile, id=file_stored)
+def delete_excel_file(request, file_id):
+    logger.debug(f"Attempting to delete file with ID: {file_id}")
+    file = get_object_or_404(ExcelFile, id=file_id)
     file.delete()
-    logger.debug(f"File with ID: {file_stored} deleted successfully.")
-    return JsonResponse({'success': True, 'file_id': file_stored})
+    logger.debug(f"File with ID: {file_id} deleted successfully.")
+    return JsonResponse({'success': True, 'file_id': file_id})
