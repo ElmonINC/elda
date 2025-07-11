@@ -53,12 +53,28 @@ def admin_login(request):
     return render(request, 'xel/admin_login.html', {'error': error})
 
 def handle_uploaded_file(excel_file_instance):
-    df = pd.read_excel(excel_file_instance.file.path)
-    for narration in df['Narration'].dropna():
-        NarrationEntry.objects.create(
-            excel_file=excel_file_instance,
-            narration=str(narration)
-        )
+    try:
+        df = pd.read_excel(excel_file_instance.file.path)
+        for narration in df['Narration'].dropna():
+            NarrationEntry.objects.create  (excel_file=excel_file_instance,  narration=str(narration).strip()) # Ensure narration is a string
+    except ValueError as e:
+        excel_file_instance.delete()  # Rollback if error occurs
+        raise ValueError(f"Error processing file {excel_file_instance.file.name}: {str(e)}")
+    except Exception as e:
+        excel_file_instance.delete()  # Rollback if error occurs
+        raise Exception(f"An unexpected error occurred while processing file {excel_file_instance.file.name}: {str(e)}")
+
+def read_excel_file(file_path):
+    df = pd.read_excel(file_path, header=None)
+    header_row = None
+    for idx, row in df.iterrows():
+        if "Narration" in row.values:
+            header_row = idx
+            break
+    if header_row is not None:
+        raise ValueError(f"The excil file must have a header row with the name 'Narration' .")
+    df.columns = df.iloc[header_row]
+    df = df.iloc[header_row + 1:].reset_index(drop=True) # Skip the header row
 
 @login_required
 def search_narration(request):
@@ -95,22 +111,17 @@ def search_narration(request):
 @user_passes_test(lambda u: u.is_superuser)
 def admin_xel(request):
     files = ExcelFile.objects.all()
-    error = None
     if request.method == 'POST':
         upload_form = ExcelUploadForm(request.POST, request.FILES)
         if upload_form.is_valid():
             excel_file_instance = upload_form.save()
-            try:
-                handle_uploaded_file(excel_file_instance)
-            except Exception as e:
-                error = str(e)
-                excel_file_instance.delete()  # Rollback if error occurs
+            handle_uploaded_file(excel_file_instance)
+            return redirect('admin') # Redirect to the admin page after successful upload
     else:
         upload_form = ExcelUploadForm()
     return render(request, 'xel/admin.html', {
         'files': files,
         'upload_form': upload_form,
-        'error': error,
     })
 
 

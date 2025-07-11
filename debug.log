@@ -400,3 +400,239 @@ django.db.utils.OperationalError: database is locked
 C:\Users\ELMON\Desktop\ONE\elda\elda\settings.py changed, reloading.
 Watching for file changes with StatReloader
 NumExpr defaulting to 4 threads.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\ELMON\Desktop\ONE\elda\xel\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\ELMON\Desktop\ONE\elda\xel\views.py changed, reloading.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+C:\Users\ELMON\Desktop\ONE\elda\xel\views.py changed, reloading.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+C:\Users\ELMON\Desktop\ONE\elda\xel\views.py changed, reloading.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+C:\Users\ELMON\Desktop\ONE\elda\xel\views.py changed, reloading.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+C:\Users\ELMON\Desktop\ONE\elda\xel\views.py changed, reloading.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+C:\Users\ELMON\Desktop\ONE\elda\xel\views.py changed, reloading.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+C:\Users\ELMON\Desktop\ONE\elda\xel\forms.py changed, reloading.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+C:\Users\ELMON\Desktop\ONE\elda\xel\views.py changed, reloading.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+C:\Users\ELMON\Desktop\ONE\elda\xel\views.py changed, reloading.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+Internal Server Error: /xel/admin/
+Traceback (most recent call last):
+  File "C:\Users\ELMON\Desktop\ONE\elda\xel\views.py", line 57, in handle_uploaded_file
+    df = read_excel_file(excel_file_instance.file.path)
+  File "C:\Users\ELMON\Desktop\ONE\elda\xel\views.py", line 70, in read_excel_file
+    for idx, row in iterrows():
+                    ^^^^^^^^
+NameError: name 'iterrows' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\ELMON\Desktop\ONE\elda\xel\views.py", line 118, in admin_xel
+    handle_uploaded_file(excel_file_instance)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\Desktop\ONE\elda\xel\views.py", line 65, in handle_uploaded_file
+    raise Exception(f"An unexpected error occurred while processing file {excel_file_instance.file.name}: {str(e)}")
+Exception: An unexpected error occurred while processing file excel_files/CallOver_Report_2025_April_1st_-_July_7th.xlsx: name 'iterrows' is not defined
+C:\Users\ELMON\Desktop\ONE\elda\xel\views.py changed, reloading.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+Internal Server Error: /xel/admin/
+Traceback (most recent call last):
+  File "C:\Users\ELMON\Desktop\ONE\elda\xel\views.py", line 57, in handle_uploaded_file
+    df = pd.read_excel_file(excel_file_instance.file.path)
+         ^^^^^^^^^^^^^^^^^^
+AttributeError: module 'pandas' has no attribute 'read_excel_file'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\ELMON\Desktop\ONE\elda\xel\views.py", line 118, in admin_xel
+    handle_uploaded_file(excel_file_instance)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\Desktop\ONE\elda\xel\views.py", line 65, in handle_uploaded_file
+    raise Exception(f"An unexpected error occurred while processing file {excel_file_instance.file.name}: {str(e)}")
+Exception: An unexpected error occurred while processing file excel_files/CallOver_Report_2025_April_1st_-_July_7th_TVexbTx.xlsx: module 'pandas' has no attribute 'read_excel_file'
+C:\Users\ELMON\Desktop\ONE\elda\xel\views.py changed, reloading.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+C:\Users\ELMON\Desktop\ONE\elda\xel\views.py changed, reloading.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+C:\Users\ELMON\Desktop\ONE\elda\xel\views.py changed, reloading.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+Internal Server Error: /xel/admin/
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: database is locked
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ELMON\Desktop\ONE\elda\xel\views.py", line 59, in handle_uploaded_file
+    NarrationEntry.objects.create  (excel_file=excel_file_instance,  narration=str(narration).strip()) # Ensure narration is a string
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 1868, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\sql\compiler.py", line 1882, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: database is locked
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: database is locked
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\ELMON\Desktop\ONE\elda\xel\views.py", line 118, in admin_xel
+    handle_uploaded_file(excel_file_instance)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\Desktop\ONE\elda\xel\views.py", line 64, in handle_uploaded_file
+    excel_file_instance.delete()  # Rollback if error occurs
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 1281, in delete
+    return collector.delete()
+           ~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\deletion.py", line 467, in delete
+    count = qs._raw_delete(using=self.using)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 1221, in _raw_delete
+    return query.get_compiler(using).execute_sql(ROW_COUNT)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: database is locked

@@ -13,12 +13,13 @@ class ExcelUploadForm(forms.ModelForm):
 
     def clean_file(self):
         file = self.cleaned_data.get('file')
-        if file:
-            try:
-                df = pd.read_excel(file)
-                if 'Narration' not in df.columns:
-                    raise forms.ValidationError("The uploaded file must contain a 'Narration' column.")
-            except Exception as e:
-                raise forms.ValidationError(f"Error reading Excel file: {str(e)}")
+        if not file.name.endswith(('.xlsx', '.xls')):
+            raise forms.ValidationError("File must be an Excel file.")
+        try:
+            # Attempt to read the file to ensure it's a valid Excel file
+            df = pd.read_excel(file)
+            if 'Narration' not in df.columns:
+                raise forms.ValidationError("The uploaded file must contain a 'Narration' column.")
+        except Exception as e:
+            raise forms.ValidationError(f"Error reading Excel file: {str(e)}")
         return file
-    
