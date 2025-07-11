@@ -11,18 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-// Bind click event to delete buttons
-    document.querySelectorAll('.delete-file').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            var fileId = this.getAttribute('data-file-id');
-            deleteFile(fileId);
-        });
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function() {
     // Bind click event to delete buttons
     document.querySelectorAll('.delete-file').forEach(button => {
         button.addEventListener('click', function(e) {
@@ -57,12 +45,6 @@ function deleteFile(fileId) {
             headers: {
                 'X-CSRFToken': getCookie('csrftoken')
             }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
         })
         .then(data => {
             if (data.success) {

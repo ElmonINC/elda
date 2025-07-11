@@ -636,3 +636,39 @@ Traceback (most recent call last):
     return super().execute(query, params)
            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
 django.db.utils.OperationalError: database is locked
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+Attempting to delete file with ID: 24
+File with ID: 24 deleted successfully.
+Attempting to delete file with ID: 24
+Not Found: /xel/admin/delete/24/
+Attempting to delete file with ID: 23
+File with ID: 23 deleted successfully.
+Attempting to delete file with ID: 23
+Not Found: /xel/admin/delete/23/
+Attempting to delete file with ID: 20
+File with ID: 20 deleted successfully.
+Attempting to delete file with ID: 20
+Not Found: /xel/admin/delete/20/
+Successfully processed file: excel_files/CallOver_Report_2025_April_1st_-_July_7th_D5erYsN.xlsx
+Successfully processed file: excel_files/CallOver_Report_2025_Jan_-_March.xlsx
+Attempting to delete file with ID: 26
+File with ID: 26 deleted successfully.
+Attempting to delete file with ID: 26
+Not Found: /xel/admin/delete/26/
+Attempting to delete file with ID: 25
+File with ID: 25 deleted successfully.
+Attempting to delete file with ID: 25
+Not Found: /xel/admin/delete/25/
+Attempting to delete file with ID: 18
+File with ID: 18 deleted successfully.
+Attempting to delete file with ID: 18
+Not Found: /xel/admin/delete/18/
+Successfully processed file: excel_files/CallOver_Report_2024_Jan_-_Dec..xlsx
+Successfully processed file: excel_files/CallOver_Report_2024_Jan_-_Dec_7vocZGw..xlsx
+Attempting to delete file with ID: 28
+File with ID: 28 deleted successfully.
+Attempting to delete file with ID: 28
+Not Found: /xel/admin/delete/28/
+Successfully processed file: excel_files/CallOver_Report_2025_Jan_-_March.xlsx
+Successfully processed file: excel_files/CallOver_Report_2025_April_1st_-_July_7th.xlsx

@@ -55,8 +55,12 @@ def admin_login(request):
 def handle_uploaded_file(excel_file_instance):
     try:
         df = pd.read_excel(excel_file_instance.file.path)
-        for narration in df['Narration'].dropna():
-            NarrationEntry.objects.create  (excel_file=excel_file_instance,  narration=str(narration).strip()) # Ensure narration is a string
+        entries = [
+            NarrationEntry(excel_file=excel_file_instance, narration=str(narration))
+            for narration in df['Narration'].dropna().tolist()
+        ] 
+        NarrationEntry.objects.bulk_create(entries)
+        logger.info(f"Successfully processed file: {excel_file_instance.file.name}")
     except ValueError as e:
         excel_file_instance.delete()  # Rollback if error occurs
         raise ValueError(f"Error processing file {excel_file_instance.file.name}: {str(e)}")
