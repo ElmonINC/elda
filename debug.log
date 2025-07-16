@@ -672,3 +672,10 @@ Attempting to delete file with ID: 28
 Not Found: /xel/admin/delete/28/
 Successfully processed file: excel_files/CallOver_Report_2025_Jan_-_March.xlsx
 Successfully processed file: excel_files/CallOver_Report_2025_April_1st_-_July_7th.xlsx
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+Not Found: /favicon.ico
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+Not Found: /favicon.ico
+Not Found: /favicon.ico
