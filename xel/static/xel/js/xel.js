@@ -59,4 +59,4 @@ function deleteFile(fileId) {
             alert('Error deleting file: ' + error.message);
         });
     }
-}
+}  

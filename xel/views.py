@@ -3,17 +3,22 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse_lazy
 from django.views import generic
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login
 from django.views.decorators.http import require_POST
+from reportlab.lib import colors
+from reportlab.pdfgen import canvas
+from reportlab.lib import finder
+from PIL import Image
 from .forms import NarrationSearchForm, ExcelUploadForm
 from .models import ExcelFile, NarrationEntry
 import pandas as pd
 import logging
-logger = logging.getLogger(__name__)
 from difflib import SequenceMatcher
+
+logger = logging.getLogger(__name__)
 
 
 class RegisterView(generic.CreateView):
@@ -137,3 +142,53 @@ def delete_excel_file(request, file_id):
     file.delete()
     logger.debug(f"File with ID: {file_id} deleted successfully.")
     return JsonResponse({'success': True, 'file_id': file_id})
+
+def generate_pdf(request, narration_id):
+    #Get the narration entry by ID
+    naration = get_object_or_404(NarrationEntry, id=narration_id)
+    excel_file = naration.excel_file
+
+    #Read the Excel file to get the narration
+    df = pd.read_excel(excel_file.file.path)
+    row = df[df['Narration'] == naration.narration].iloc[0]
+
+    #Define where to place each field on the image (x, y coordinates fromt the top left corner, in pixels)
+    field_position = {
+        'Date': (50, 50),  # Example position for Date
+        '': (50, 100),  # Example position for Amount
+    }
+   
+   #Locate the image template
+    image_path = finder.find('xel/static/xel/image/Teller.png')
+    if not image_path:
+        return HttpResponse("Image template not found.", status=404)
+    
+    #Get image dimensions
+    with Image.open(image_path) as img:
+        width, height = img.size
+
+    #Create a PDF response
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{naration.narration}.pdf"'
+
+    #Create canvas with page size matching the image dimensions
+    c = canvas.Canvas(response, pagesize=(width, height))
+
+    #Draw the image on the canvas
+    c.drawImage(image_path, 0, 0, width, height)
+
+    #Set the text proterties
+    c.setFont("Helvetica", 12)
+    c.setFillColor(colors.blue)
+
+    #Overlay the texts from the Excel file onto the image
+    for field, (x, y_from_top) in field_position.items():
+        value = str(row[field]) if field in row else "N/A" # Default to "N/A" if field not found
+        #Convert y_from_top to PDF coordinate system (origin at bottom left)
+        y_pdf = height - y_from_top
+        c.drawString(x, y_pdf, f"{field}: {value}")
+
+    #Save and print the PDF
+    c.showPage()
+    c.save()
+    return response
