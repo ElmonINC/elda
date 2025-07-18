@@ -4,13 +4,13 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse_lazy
 from django.views import generic
 from django.http import JsonResponse, HttpResponse
-from django.contrib.auth import logout as auth_logout
+from django.contrib.auth import logout as auth_logout, authenticate
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login
 from django.views.decorators.http import require_POST
+from django.contrib.staticfiles import finders
 from reportlab.lib import colors
 from reportlab.pdfgen import canvas
-from reportlab.lib import finder
 from PIL import Image
 from .forms import NarrationSearchForm, ExcelUploadForm
 from .models import ExcelFile, NarrationEntry
@@ -104,9 +104,11 @@ def search_narration(request):
                     if word in narration_lower or SequenceMatcher(None, word, narration_lower).ratio() > 0.7:
                         match_count += 1
                 if match_count == len(query_words):
-                    results.append(narration_text)
+                    results.append(entry) # Add the narration text to results if it matches the query
             # Remove duplicates, sort alphabetically
-            results = sorted(list(set(results)), key=lambda x: x.lower())
+            seen = set()
+            new_results = [r for r in results if not (r.narration in seen or seen.add(r.narration))]
+            results = sorted(new_results, key=lambda x: x.narration.lower())
             show_results = True
     else:
         form = NarrationSearchForm()
@@ -154,12 +156,15 @@ def generate_pdf(request, narration_id):
 
     #Define where to place each field on the image (x, y coordinates fromt the top left corner, in pixels)
     field_position = {
-        'Date': (50, 50),  # Example position for Date
-        '': (50, 100),  # Example position for Amount
+        'Financial Date': (246, 212),  #Date
+        'Narration': (50, 100),  # Depositor's Name
+        'Narration': (780, 105), #Department and Level
+        'Credit': (1947, 397), #Amount in Figures
+        'Credit': (1980, 1023), # Total amount in Figures
     }
    
    #Locate the image template
-    image_path = finder.find('xel/static/xel/image/Teller.png')
+    image_path = finders.find('xel/static/xel/image/Teller.png')
     if not image_path:
         return HttpResponse("Image template not found.", status=404)
     

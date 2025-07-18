@@ -16,7 +16,7 @@
         {% if results %}
             <ol>
             {% for res in results %}
-                <li>{{ res }} <a href="{% url 'generate_pdf' narration_id=res.id %}" target="_blank">Print</a></li>
+                <li>{{ res.narration }} <a href="{% url 'generate_pdf' narration_id=res.id %}" target="_blank">Print</a></li>
             {% endfor %}
             </ol>
         {% else %}
