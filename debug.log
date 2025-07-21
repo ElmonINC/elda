@@ -18,3 +18,18 @@ STREAM b'IHDR' 16 13
 STREAM b'IDAT' 41 8192
 Watching for file changes with StatReloader
 NumExpr defaulting to 4 threads.
+STREAM b'IHDR' 16 13
+STREAM b'IDAT' 41 8192
+STREAM b'IHDR' 16 13
+STREAM b'IDAT' 41 8192
+STREAM b'IHDR' 16 13
+STREAM b'IDAT' 41 8192
+STREAM b'IHDR' 16 13
+STREAM b'IDAT' 41 8192
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+Not Found: /favicon.ico
+STREAM b'IHDR' 16 13
+STREAM b'IDAT' 41 8192
+STREAM b'IHDR' 16 13
+STREAM b'IDAT' 41 8192

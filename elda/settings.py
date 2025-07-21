@@ -79,8 +79,8 @@ WSGI_APPLICATION = 'elda.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': BASE_DIR / 'elda_db',
         'OPTION': {
             'timeout': 20,
         }
@@ -127,6 +127,23 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Cache settings
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'PARSER_CLASS': 'redis.connection.HiredisParser',
+            'TIMEOUT': 60,
+        }
+    }
+}
+
+# Celery settings to offload heavy tasks like file uploads to be a background task
+CELERY_BROKER_URL = 'redis://127.0.1:6379/0'
+CELERY_RESULT_BACKEND = 'redis://127.0.1:6379/0'
 
 # Increase file upload size limit
 DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50MB

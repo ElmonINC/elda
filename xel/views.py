@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse_lazy
 from django.views import generic
 from django.http import JsonResponse, HttpResponse
+from django.core.cache import cache
 from django.contrib.auth import logout as auth_logout, authenticate
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login
@@ -98,29 +99,30 @@ def search_narration(request):
         form = NarrationSearchForm(request.POST)
         if form.is_valid():
             query = form.cleaned_data['query'].strip()
-            query_words = query.lower().split()
-            for entry in NarrationEntry.objects.all():
-                narration_text = entry.narration or ""
-                narration_lower = narration_text.lower()
-                # Check if all query words are present or similar in the narration
-                match_count = 0
+            cache_key = f"search_{query.lower().replace(' ', '_')}"
+            results = cache.get(cache_key)
+            if results is None:
+                query_words = query.lower().split()
+                query_filter = Q()
                 for word in query_words:
-                    if word in narration_lower or SequenceMatcher(None, word, narration_lower).ratio() > 0.7:
-                        match_count += 1
-                if match_count == len(query_words):
-                    # Check the Excel file for Credit column
-                    try:
-                        df = pd.read_excel(entry.excel_file.file.path)
-                        row = df[df['Narration'] == entry.narration]
-                        if not row.empty and pd.notnull(row['Credit'].iloc[0]) and pd.isnull(row['Debit'].iloc[0]):
-                            results.append(entry)
-                    except (KeyError, ValueError) as e:
-                        logger.error(f"Error processing Excel file for entry {entry.id}: {str(e)}")
-                        continue
-            # Remove duplicates by narration text and sort
-            seen = set()
-            unique_results = [r for r in results if not (r.narration in seen or seen.add(r.narration))]
-            results = sorted(unique_results, key=lambda x: x.narration.lower())
+                    query_filter &= Q(narration__icontains=word)
+                entries = NarrationEntry.objects.filter(has_Credit=True).filter(query_filter)[:100]
+                results = []
+                for entry in entries:
+                    narration_text = entry.narration or ""
+                    narration_lower = narration_text.lower()
+                    match_count = 0
+                    for word in query_words:
+                        if word in narration_lower:
+                            match_count += 1
+                        elif SequenceMatcher(None, word, narration_lower).ratio() > 0.7:
+                            match_count += 1
+                    if match_count == len(query_words):
+                        results.append(entry)
+                seen = set()
+                unique_results = [r for r in results if not (r.narration in seen or seen.add(r.narration))]
+                results = sorted(unique_results, key=lambda x: x.narration.lower())
+                cache.set(cache_key, results, timeout=3600)  # Cache for 1 hour
             show_results = True
     else:
         form = NarrationSearchForm()
