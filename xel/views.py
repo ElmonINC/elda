@@ -164,7 +164,7 @@ def generate_pdf(request, narration_id):
     }
    
    #Locate the image template
-    image_path = finders.find('xel/static/xel/image/Teller.png')
+    image_path = finders.find('xel/image/Teller.png')
     if not image_path:
         return HttpResponse("Image template not found.", status=404)
     
@@ -180,10 +180,10 @@ def generate_pdf(request, narration_id):
     c = canvas.Canvas(response, pagesize=(width, height))
 
     #Draw the image on the canvas
-    c.drawImage(image_path, 0, 0, width, height)
+    c.drawImage(image_path, 0, 0, width=width, height=height)
 
     #Set the text proterties
-    c.setFont("Helvetica", 12)
+    c.setFont("Helvetica", 32)
     c.setFillColor(colors.blue)
 
     #Overlay the texts from the Excel file onto the image
