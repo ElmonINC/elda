@@ -15,6 +15,8 @@ from reportlab.pdfgen import canvas
 from PIL import Image
 from .forms import NarrationSearchForm, ExcelUploadForm
 from .models import ExcelFile, NarrationEntry
+from .task import process_excel_file
+from django.db.models import Q
 import pandas as pd
 import logging
 import re
@@ -62,10 +64,11 @@ def handle_uploaded_file(excel_file_instance):
     try:
         df = pd.read_excel(excel_file_instance.file.path)
         entries = [
-            NarrationEntry(
-                excel_file=excel_file_instance,
+            NarrationEntry(excel_file=excel_file_instance,
                 narration=str(row['Narration']),
-                has_Credit=bool(pd.notnull(row['Credit']) and pd.isnull(row['Debit']))
+                has_Credit=bool(pd.notnull(row['Credit']) and pd.isnull(row['Debit'])),
+                financial_date=str(row['Financial Date']) if pd.notnull(row.get('Financial Date')) else "",
+                credit=str(row['Credit']) if pd.notnull(row.get('Credit')) else ""
             )
             for _, row in df.iterrows() if pd.notnull(row['Narration'])
         ]
@@ -140,7 +143,7 @@ def admin_xel(request):
         upload_form = ExcelUploadForm(request.POST, request.FILES)
         if upload_form.is_valid():
             excel_file_instance = upload_form.save()
-            handle_uploaded_file(excel_file_instance)
+            process_excel_file.delay(excel_file_instance.id)  # Run in background
             return redirect('admin')
     else:
         upload_form = ExcelUploadForm()
@@ -160,65 +163,46 @@ def delete_excel_file(request, file_id):
 
 @login_required
 def generate_pdf(request, narration_id):
-    # Get the narration entry by ID
     narration = get_object_or_404(NarrationEntry, id=narration_id)
-    excel_file = narration.excel_file
-
-    # Read the Excel file to get the narration
-    df = pd.read_excel(excel_file.file.path)
-    row = df[(df['Narration'] == narration.narration) & pd.notnull(df['Credit']) & pd.isnull(df['Debit'])].iloc[0]
-
-    # Define where to place each field on the image (x, y coordinates from the top left corner, in pixels)
     field_position = {
         'Financial Date': [(246, 212)],
         'Narration': [(50, 100), (780, 105)],
         'Credit': [(1947, 397), (1980, 1023)],
     }
-
-    # Locate the image template
     image_path = finders.find('xel/image/Teller.png')
     if not image_path:
         return HttpResponse("Image template not found.", status=404)
     
-    # Get image dimensions
     with Image.open(image_path) as img:
         width, height = img.size
 
-    # Create a PDF response
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="{narration.narration}.pdf"'
 
-    # Create canvas with page size matching the image dimensions
     c = canvas.Canvas(response, pagesize=(width, height))
-
-    # Draw the image on the canvas
     c.drawImage(image_path, 0, 0, width=width, height=height)
 
-    # Set the text properties
     c.setFont("Helvetica", 32)
     c.setFillColor(colors.blue)
 
-    # Overlay the texts from the Excel file onto the image
     for field, positions in field_position.items():
         if field == 'Narration':
-            value = str(row[field]) if field in row else "N/A"
-            # Split Narration: text after "by" and text in final parentheses
+            value = narration.narration or "N/A"
             match = re.match(r'^(.*?)\bby\b\s*([^()]+)\s*\((.*?)\)$', value)
             if match:
-                narration_parts = [match.group(2).strip(), match.group(3)]  # After "by", inside parentheses
+                narration_parts = [match.group(2).strip(), match.group(3)]
             else:
-                narration_parts = ["", ""]  # Default if pattern doesn't match
+                narration_parts = ["", ""]
             for i, (x, y_from_top) in enumerate(positions):
                 part = narration_parts[i] if i < len(narration_parts) else ""
                 y_pdf = height - y_from_top
                 c.drawString(x, y_pdf, part)
         else:
-            value = str(row[field]) if field in row else "N/A"
+            value = getattr(narration, field.lower().replace(" ", "_"), "N/A")
             for x, y_from_top in positions:
                 y_pdf = height - y_from_top
-                c.drawString(x, y_pdf, value)
+                c.drawString(x, y_pdf, str(value))
 
-    # Save and print the PDF
     c.showPage()
     c.save()
     return response

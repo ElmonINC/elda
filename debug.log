@@ -2,34 +2,490 @@ NumExpr defaulting to 4 threads.
 NumExpr defaulting to 4 threads.
 Watching for file changes with StatReloader
 NumExpr defaulting to 4 threads.
-NumExpr defaulting to 4 threads.
 Watching for file changes with StatReloader
 NumExpr defaulting to 4 threads.
-Successfully processed file: excel_files/CallOver_Report_2024_Jan_-_Dec_UhUApp1..xlsx
-Successfully processed file: excel_files/CallOver_Report_2025_April_1st_-_July_7th.xlsx
-Successfully processed file: excel_files/CallOver_Report_2025_Jan_-_March.xlsx
-STREAM b'IHDR' 16 13
-STREAM b'IDAT' 41 8192
-STREAM b'IHDR' 16 13
-STREAM b'IDAT' 41 8192
-STREAM b'IHDR' 16 13
-STREAM b'IDAT' 41 8192
-STREAM b'IHDR' 16 13
-STREAM b'IDAT' 41 8192
-Watching for file changes with StatReloader
 NumExpr defaulting to 4 threads.
-STREAM b'IHDR' 16 13
-STREAM b'IDAT' 41 8192
-STREAM b'IHDR' 16 13
-STREAM b'IDAT' 41 8192
-STREAM b'IHDR' 16 13
-STREAM b'IDAT' 41 8192
-STREAM b'IHDR' 16 13
-STREAM b'IDAT' 41 8192
+NumExpr defaulting to 4 threads.
 Watching for file changes with StatReloader
 NumExpr defaulting to 4 threads.
 Not Found: /favicon.ico
-STREAM b'IHDR' 16 13
-STREAM b'IDAT' 41 8192
-STREAM b'IHDR' 16 13
-STREAM b'IDAT' 41 8192
+NumExpr defaulting to 4 threads.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+C:\Users\ELMON\Desktop\ONE\elda\manage.py changed, reloading.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+C:\Users\ELMON\Desktop\ONE\elda\manage.py changed, reloading.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+C:\Users\ELMON\Desktop\ONE\elda\manage.py changed, reloading.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+Internal Server Error: /xel/admin/
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "xel_excelfile" does not exist
+LINE 1: ...lfile"."file", "xel_excelfile"."uploaded_at" FROM "xel_excel...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\ELMON\Desktop\ONE\elda\xel\views.py", line 148, in admin_xel
+    return render(request, 'xel/admin.html', {
+        'files': files,
+        'upload_form': upload_form,
+    })
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\defaulttags.py", line 199, in render
+    len_values = len(values)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "xel_excelfile" does not exist
+LINE 1: ...lfile"."file", "xel_excelfile"."uploaded_at" FROM "xel_excel...
+                                                             ^
+
+NumExpr defaulting to 4 threads.
+NumExpr defaulting to 4 threads.
+NumExpr defaulting to 4 threads.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+Internal Server Error: /xel/admin/
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\ELMON\Desktop\ONE\elda\xel\views.py", line 144, in admin_xel
+    process_excel_file.delay(excel_file_instance.id)  # Run in background
+    ^^^^^^^^^^^^^^^^^^
+NameError: name 'process_excel_file' is not defined. Did you mean: 'read_excel_file'?
+C:\Users\ELMON\Desktop\ONE\elda\xel\views.py changed, reloading.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+
+def accumulate(self, *args, **kwargs):
+    return 1
+
+
+def chord(self, header, body, partial_args=0, interval=1, countdown=2, max_retries=3, eager=4, **kwargs):
+    return 1
+
+
+def chunks(task, it, n):
+    return 1
+
+
+def unlock_chord(self, group_id, callback, interval=0, max_retries=1, result=2, Result=3, GroupResult=4, result_from_tuple=5, **kwargs):
+    return 1
+
+
+def group(self, tasks, result, group_id, partial_args, add_to_parent=0):
+    return 1
+
+
+def xmap(task, it):
+    return 1
+
+
+def backend_cleanup():
+    return 1
+
+
+def chain(*args, **kwargs):
+    return 1
+
+
+def xstarmap(task, it):
+    return 1
+
+
+def process_excel_file(excel_file_id):
+    return 1
+
+No hostname was supplied. Reverting to default 'localhost'
+Internal Server Error: /xel/admin/
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\utils\functional.py", line 32, in __call__
+    return self.__value__
+           ^^^^^^^^^^^^^^
+AttributeError: 'ChannelPromise' object has no attribute '__value__'. Did you mean: '__call__'?
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\connection.py", line 472, in _reraise_as_library_errors
+    yield
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\connection.py", line 459, in _ensure_connection
+    return retry_over_time(
+        self._connection_factory, self.recoverable_connection_errors,
+    ...<2 lines>...
+        callback, timeout=timeout
+    )
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\utils\functional.py", line 318, in retry_over_time
+    return fun(*args, **kwargs)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\connection.py", line 938, in _connection_factory
+    self._connection = self._establish_connection()
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\connection.py", line 860, in _establish_connection
+    conn = self.transport.establish_connection()
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\transport\pyamqp.py", line 203, in establish_connection
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\amqp\connection.py", line 324, in connect
+    self.transport.connect()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\amqp\transport.py", line 132, in connect
+    self._connect(self.host, self.port, self.connect_timeout)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\amqp\transport.py", line 187, in _connect
+    self.sock.connect(sa)
+    ~~~~~~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\ELMON\Desktop\ONE\elda\xel\views.py", line 146, in admin_xel
+    process_excel_file.delay(excel_file_instance.id)  # Run in background
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\celery\app\task.py", line 444, in delay
+    return self.apply_async(args, kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\celery\app\task.py", line 601, in apply_async
+    return app.send_task(
+           ~~~~~~~~~~~~~^
+        self.name, args, kwargs, task_id=task_id, producer=producer,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        **options
+        ^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\celery\app\base.py", line 930, in send_task
+    amqp.send_task_message(P, name, message, **options)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\celery\app\amqp.py", line 523, in send_task_message
+    ret = producer.publish(
+        body,
+    ...<8 lines>...
+        **properties
+    )
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\messaging.py", line 190, in publish
+    return _publish(
+        body, priority, content_type, content_encoding,
+        headers, properties, routing_key, mandatory, immediate,
+        exchange_name, declare, timeout, confirm_timeout, retry, retry_policy
+    )
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\connection.py", line 556, in _ensured
+    return fun(*args, **kwargs)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\messaging.py", line 200, in _publish
+    channel = self.channel
+              ^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\messaging.py", line 224, in _get_channel
+    channel = self._channel = channel()
+                              ~~~~~~~^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\utils\functional.py", line 34, in __call__
+    value = self.__value__ = self.__contract__()
+                             ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\messaging.py", line 240, in <lambda>
+    channel = ChannelPromise(lambda: connection.default_channel)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\connection.py", line 957, in default_channel
+    self._ensure_connection(**conn_opts)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\connection.py", line 458, in _ensure_connection
+    with ctx():
+         ~~~^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\connection.py", line 476, in _reraise_as_library_errors
+    raise ConnectionError(str(exc)) from exc
+kombu.exceptions.OperationalError: [WinError 10061] No connection could be made because the target machine actively refused it
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+
+def accumulate(self, *args, **kwargs):
+    return 1
+
+
+def chord(self, header, body, partial_args=0, interval=1, countdown=2, max_retries=3, eager=4, **kwargs):
+    return 1
+
+
+def chunks(task, it, n):
+    return 1
+
+
+def unlock_chord(self, group_id, callback, interval=0, max_retries=1, result=2, Result=3, GroupResult=4, result_from_tuple=5, **kwargs):
+    return 1
+
+
+def group(self, tasks, result, group_id, partial_args, add_to_parent=0):
+    return 1
+
+
+def xmap(task, it):
+    return 1
+
+
+def backend_cleanup():
+    return 1
+
+
+def chain(*args, **kwargs):
+    return 1
+
+
+def xstarmap(task, it):
+    return 1
+
+
+def process_excel_file(excel_file_id):
+    return 1
+
+No hostname was supplied. Reverting to default 'localhost'
+Internal Server Error: /xel/admin/
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\utils\functional.py", line 32, in __call__
+    return self.__value__
+           ^^^^^^^^^^^^^^
+AttributeError: 'ChannelPromise' object has no attribute '__value__'. Did you mean: '__call__'?
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\connection.py", line 472, in _reraise_as_library_errors
+    yield
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\connection.py", line 459, in _ensure_connection
+    return retry_over_time(
+        self._connection_factory, self.recoverable_connection_errors,
+    ...<2 lines>...
+        callback, timeout=timeout
+    )
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\utils\functional.py", line 318, in retry_over_time
+    return fun(*args, **kwargs)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\connection.py", line 938, in _connection_factory
+    self._connection = self._establish_connection()
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\connection.py", line 860, in _establish_connection
+    conn = self.transport.establish_connection()
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\transport\pyamqp.py", line 203, in establish_connection
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\amqp\connection.py", line 324, in connect
+    self.transport.connect()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\amqp\transport.py", line 132, in connect
+    self._connect(self.host, self.port, self.connect_timeout)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\amqp\transport.py", line 187, in _connect
+    self.sock.connect(sa)
+    ~~~~~~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\ELMON\Desktop\ONE\elda\xel\views.py", line 146, in admin_xel
+    process_excel_file.delay(excel_file_instance.id)  # Run in background
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\celery\app\task.py", line 444, in delay
+    return self.apply_async(args, kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\celery\app\task.py", line 601, in apply_async
+    return app.send_task(
+           ~~~~~~~~~~~~~^
+        self.name, args, kwargs, task_id=task_id, producer=producer,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        **options
+        ^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\celery\app\base.py", line 930, in send_task
+    amqp.send_task_message(P, name, message, **options)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\celery\app\amqp.py", line 523, in send_task_message
+    ret = producer.publish(
+        body,
+    ...<8 lines>...
+        **properties
+    )
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\messaging.py", line 190, in publish
+    return _publish(
+        body, priority, content_type, content_encoding,
+        headers, properties, routing_key, mandatory, immediate,
+        exchange_name, declare, timeout, confirm_timeout, retry, retry_policy
+    )
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\connection.py", line 556, in _ensured
+    return fun(*args, **kwargs)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\messaging.py", line 200, in _publish
+    channel = self.channel
+              ^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\messaging.py", line 224, in _get_channel
+    channel = self._channel = channel()
+                              ~~~~~~~^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\utils\functional.py", line 34, in __call__
+    value = self.__value__ = self.__contract__()
+                             ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\messaging.py", line 240, in <lambda>
+    channel = ChannelPromise(lambda: connection.default_channel)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\connection.py", line 957, in default_channel
+    self._ensure_connection(**conn_opts)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\connection.py", line 458, in _ensure_connection
+    with ctx():
+         ~~~^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\kombu\connection.py", line 476, in _reraise_as_library_errors
+    raise ConnectionError(str(exc)) from exc
+kombu.exceptions.OperationalError: [WinError 10061] No connection could be made because the target machine actively refused it
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+Not Found: /favicon.ico
+Internal Server Error: /xel/search/
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\module_loading.py", line 30, in import_string
+    return cached_import(module_path, class_name)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\module_loading.py", line 16, in cached_import
+    return getattr(module, class_name)
+AttributeError: module 'redis.connection' has no attribute 'HiredisParser'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\ELMON\Desktop\ONE\elda\xel\views.py", line 106, in search_narration
+    results = cache.get(cache_key)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_redis\cache.py", line 92, in get
+    value = self._get(key, default, version, client)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_redis\cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_redis\cache.py", line 99, in _get
+    return self.client.get(key, default=default, version=version, client=client)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_redis\client\default.py", line 293, in get
+    client = self.get_client(write=False)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_redis\client\default.py", line 128, in get_client
+    self._clients[index] = self.connect(index)
+                           ~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_redis\client\default.py", line 157, in connect
+    return self.connection_factory.connect(self._server[index])
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_redis\pool.py", line 69, in connect
+    params = self.make_connection_params(url)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_redis\pool.py", line 41, in make_connection_params
+    "parser_class": self.get_parser_cls(),
+                    ~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_redis\pool.py", line 97, in get_parser_cls
+    return import_string(cls)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\module_loading.py", line 32, in import_string
+    raise ImportError(
+    ...<2 lines>...
+    ) from err
+ImportError: Module "redis.connection" does not define a "HiredisParser" attribute/class
