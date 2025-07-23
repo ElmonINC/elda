@@ -60,26 +60,26 @@ def admin_login(request):
             error = "Invalid credentials or not an admin."
     return render(request, 'xel/admin_login.html', {'error': error})
 
-def handle_uploaded_file(excel_file_instance):
-    try:
-        df = pd.read_excel(excel_file_instance.file.path)
-        entries = [
-            NarrationEntry(excel_file=excel_file_instance,
-                narration=str(row['Narration']),
-                has_Credit=bool(pd.notnull(row['Credit']) and pd.isnull(row['Debit'])),
-                financial_date=str(row['Financial Date']) if pd.notnull(row.get('Financial Date')) else "",
-                credit=str(row['Credit']) if pd.notnull(row.get('Credit')) else ""
-            )
-            for _, row in df.iterrows() if pd.notnull(row['Narration'])
-        ]
-        NarrationEntry.objects.bulk_create(entries)
-        logger.info(f"Successfully processed file: {excel_file_instance.file.name}")
-    except KeyError as e:
-        excel_file_instance.delete()
-        raise ValueError(f"Missing required column in {excel_file_instance.file.name}: {str(e)}")
-    except Exception as e:
-        excel_file_instance.delete()
-        raise Exception(f"An unexpected error occurred while processing file {excel_file_instance.file.name}: {str(e)}")
+#def handle_uploaded_file(excel_file_instance):
+#    try:
+#        df = pd.read_excel(excel_file_instance.file.path)
+#        entries = [
+#            NarrationEntry(excel_file=excel_file_instance,
+#                narration=str(row['Narration']),
+#                has_Credit=bool(pd.notnull(row['Credit']) and pd.isnull(row['Debit'])),
+#                financial_date=str(row['Financial Date']) if pd.notnull(row.get('Financial Date')) else "",
+#                credit=str(row['Credit']) if pd.notnull(row.get('Credit')) else ""
+#            )
+#            for _, row in df.iterrows() if pd.notnull(row['Narration'])
+#        ]
+#        NarrationEntry.objects.bulk_create(entries)
+#        logger.info(f"Successfully processed file: {excel_file_instance.file.name}")
+#    except KeyError as e:
+#        excel_file_instance.delete()
+#        raise ValueError(f"Missing required column in {excel_file_instance.file.name}: {str(e)}")
+#    except Exception as e:
+#        excel_file_instance.delete()
+#        raise Exception(f"An unexpected error occurred while processing file {excel_file_instance.file.name}: {str(e)}")
     
 def read_excel_file(file_path):
     df = pd.read_excel(file_path, header=None)
@@ -126,6 +126,9 @@ def search_narration(request):
                 unique_results = [r for r in results if not (r.narration in seen or seen.add(r.narration))]
                 results = sorted(unique_results, key=lambda x: x.narration.lower())
                 cache.set(cache_key, results, timeout=3600)  # Cache for 1 hour
+                logger.info(f"Search query '{query}', Results: {len(results)}, Time: {time.time() - start_time:.2f}seconds")
+            else:
+                logger.info(f"Cache hit for query '{query}', Time: {time.time() - start_time:.2f} seconds")
             show_results = True
     else:
         form = NarrationSearchForm()

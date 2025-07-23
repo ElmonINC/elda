@@ -132,19 +132,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Cache settings
 CACHES = {
     'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'BACKEND': 'django_redis.cache.RedisCache',  # Use Redis as the cache backend
+        'LOCATION': 'redis://127.0.0.1:6379/1', # Use Redis for caching
         'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            'PARSER_CLASS': 'redis.connection.HiredisParser',
-            'TIMEOUT': 60,
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',  # Use the default Redis client
+            'PARSER_CLASS': 'redis.connection.PythonParser',  # Use Python parser for compatibility
+            'TIMEOUT': 360000,  # Cache timeout in seconds
         }
     }
 }
 
 # Celery settings to offload heavy tasks like file uploads to be a background task
-CELERY_BROKER_URL = 'redis://127.0.1:6379/0'
-CELERY_RESULT_BACKEND = 'redis://127.0.1:6379/0'
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'

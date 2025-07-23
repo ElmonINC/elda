@@ -632,3 +632,101 @@ NumExpr defaulting to 4 threads.
 NumExpr defaulting to 4 threads.
 NumExpr defaulting to 4 threads.
 NumExpr defaulting to 4 threads.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+Internal Server Error: /xel/search/
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\module_loading.py", line 30, in import_string
+    return cached_import(module_path, class_name)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\module_loading.py", line 16, in cached_import
+    return getattr(module, class_name)
+AttributeError: module 'redis.connection' has no attribute 'HiredisParser'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\ELMON\Desktop\ONE\elda\xel\views.py", line 106, in search_narration
+    results = cache.get(cache_key)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_redis\cache.py", line 92, in get
+    value = self._get(key, default, version, client)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_redis\cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_redis\cache.py", line 99, in _get
+    return self.client.get(key, default=default, version=version, client=client)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_redis\client\default.py", line 293, in get
+    client = self.get_client(write=False)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_redis\client\default.py", line 128, in get_client
+    self._clients[index] = self.connect(index)
+                           ~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_redis\client\default.py", line 157, in connect
+    return self.connection_factory.connect(self._server[index])
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_redis\pool.py", line 69, in connect
+    params = self.make_connection_params(url)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_redis\pool.py", line 41, in make_connection_params
+    "parser_class": self.get_parser_cls(),
+                    ~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django_redis\pool.py", line 97, in get_parser_cls
+    return import_string(cls)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\module_loading.py", line 32, in import_string
+    raise ImportError(
+    ...<2 lines>...
+    ) from err
+ImportError: Module "redis.connection" does not define a "HiredisParser" attribute/class
+NumExpr defaulting to 4 threads.
+
+def xstarmap(task, it):
+    return 1
+
+
+def accumulate(self, *args, **kwargs):
+    return 1
+
+
+def process_excel_file(excel_file_id):
+    return 1
+
+
+def chord(self, header, body, partial_args=0, interval=1, countdown=2, max_retries=3, eager=4, **kwargs):
+    return 1
+
+
+def chunks(task, it, n):
+    return 1
+
+
+def unlock_chord(self, group_id, callback, interval=0, max_retries=1, result=2, Result=3, GroupResult=4, result_from_tuple=5, **kwargs):
+    return 1
+
+
+def group(self, tasks, result, group_id, partial_args, add_to_parent=0):
+    return 1
+
+
+def xmap(task, it):
+    return 1
+
+
+def backend_cleanup():
+    return 1
+
+
+def chain(*args, **kwargs):
+    return 1
+
+NumExpr defaulting to 4 threads.
+NumExpr defaulting to 4 threads.
+NumExpr defaulting to 4 threads.
+NumExpr defaulting to 4 threads.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+C:\Users\ELMON\Desktop\ONE\elda\elda\settings.py changed, reloading.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
