@@ -143,8 +143,13 @@ def admin_xel(request):
         upload_form = ExcelUploadForm(request.POST, request.FILES)
         if upload_form.is_valid():
             excel_file_instance = upload_form.save()
+            logger.info(f"File uploaded: {excel_file_instance.file.name}, ID: {excel_file_instance.id}") # Log the file upload
             process_excel_file.delay(excel_file_instance.id)  # Run in background
+            logger.info(f"Processing task for file ID: {excel_file_instance.id} has been queued.")
             return redirect('admin')
+        else:
+            logger.error(f"File upload failed: {upload_form.errors}")
+            #return render(request, 'xel/admin.html', {'files': files, 'upload_form': upload_form, 'errors': upload_form.errors})
     else:
         upload_form = ExcelUploadForm()
     return render(request, 'xel/admin.html', {
@@ -164,6 +169,7 @@ def delete_excel_file(request, file_id):
 @login_required
 def generate_pdf(request, narration_id):
     narration = get_object_or_404(NarrationEntry, id=narration_id)
+    logger.info(f"Generating PDF for narration ID: {narration_id}, Narration: {narration.narration}")
     field_position = {
         'Financial Date': [(246, 212)],
         'Narration': [(50, 100), (780, 105)],

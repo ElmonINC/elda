@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.postgres',
     'data_elda',
     'xel',
 ]
@@ -132,7 +133,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.1:6379/1',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'PARSER_CLASS': 'redis.connection.HiredisParser',
@@ -144,6 +145,10 @@ CACHES = {
 # Celery settings to offload heavy tasks like file uploads to be a background task
 CELERY_BROKER_URL = 'redis://127.0.1:6379/0'
 CELERY_RESULT_BACKEND = 'redis://127.0.1:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
 
 # Increase file upload size limit
 DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50MB
