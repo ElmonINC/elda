@@ -877,3 +877,17 @@ NumExpr defaulting to 4 threads.
 NumExpr defaulting to 4 threads.
 NumExpr defaulting to 4 threads.
 NumExpr defaulting to 4 threads.
+Watching for file changes with StatReloader
+NumExpr defaulting to 4 threads.
+Internal Server Error: /xel/search/
+Traceback (most recent call last):
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\ELMON\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\ELMON\Desktop\ONE\elda\xel\views.py", line 129, in search_narration
+    logger.info(f"Search query '{query}', Results: {len(results)}, Time: {time.time() - start_time:.2f}seconds")
+                                                                          ^^^^
+NameError: name 'time' is not defined. Did you forget to import 'time'?
