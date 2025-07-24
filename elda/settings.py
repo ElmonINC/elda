@@ -136,7 +136,7 @@ CACHES = {
         'LOCATION': 'redis://127.0.0.1:6379/1', # Use Redis for caching
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',  # Use the default Redis client
-            'PARSER_CLASS': 'redis.connection.PythonParser',  # Use Python parser for compatibility
+            'PARSER_CLASS': 'redis.connection.PythonParser',  # Use Python parser for Redis responses
             'TIMEOUT': 360000,  # Cache timeout in seconds
         }
     }
