@@ -4,6 +4,9 @@ from PyPDF2 import PdfReader, PdfWriter
 import io
 import os
 from django.conf import settings
+import logging
+
+logger = logging.getLogger(__name__)
 
 def generate_pdf(data):
     buffer = io.BytesIO()
@@ -19,7 +22,7 @@ def generate_pdf(data):
     
     for field, (x, y) in field_positions.items():
         value = str(data.get(field, 'N/A')).split('by', 1)[1].strip() if field == 'narration' and 'by' in str(data.get(field, '')) else str(data.get(field, 'N/A'))
-        c.drawString(x, y, value[:100])  # Limit length to avoid overflow
+        c.drawString(x, y, value[:100])
     
     c.showPage()
     c.save()
@@ -36,6 +39,7 @@ def generate_pdf(data):
         output.add_page(page)
     else:
         output.add_page(new_pdf.pages[0])
+        logger.warning(f"Background PDF not found at {background_path}")
     
     output_buffer = io.BytesIO()
     output.write(output_buffer)

@@ -67,9 +67,10 @@ def admin_xel(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 @require_POST
-def delete_excel_file(request, file_id):
+def delete_excel(request, file_id):
     try:
         file = get_object_or_404(ExcelFile, id=file_id)
+        logger.info(f"Deleting file with ID: {file_id}, Path: {file.file.path}")
         file.delete()
         logger.info(f"File with ID: {file_id} deleted successfully")
         return JsonResponse({'success': True, 'file_id': file_id})
@@ -119,8 +120,6 @@ def search_narration(request):
                 else:
                     logger.info(f"Cache hit for query: {query}, Time: {time.time() - start_time:.2f} seconds")
                 show_results = True
-            else:
-                form.add_error('query', 'Please enter 2 or 3 words')
     return render(request, 'xel/search.html', {
         'form': form,
         'results': results,

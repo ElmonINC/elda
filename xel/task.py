@@ -1,41 +1,42 @@
 from celery import shared_task
-from .models import ExcelFile, NarrationEntry
 import pandas as pd
+from .models import ExcelFile, NarrationEntry
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
 @shared_task
-def process_excel_file(excel_file_id):
-    excel_file_instance = ExcelFile.objects.get(id=excel_file_id)
+def process_excel_file(file_id):
     try:
-        df = pd.read_excel(excel_file_instance.file.path)
-        entries = [
-            NarrationEntry(
-                excel_file=excel_file_instance,
-                narration=str(row['Narration']) if pd.notnull(row.get('Narration')) else "",
-                has_Credit=bool(pd.notnull(row.get('Credit')) and pd.isnull(row.get('Debit'))),
-                debit=str(row['Debit']) if pd.notnull(row.get('Debit')) else "",
-                credit=str(row['Credit']) if pd.notnull(row.get('Credit')) else "",
-                entry_code=str(row['Entry Code']) if pd.notnull(row.get('Entry Code')) else "",
-                instrument_no=str(row['Instrument No.']) if pd.notnull(row.get('Instrument No.')) else "",
-                client_ip_address=str(row['Client IP Address']) if pd.notnull(row.get('Client IP Address')) else "",
-                branch=str(row['Branch']) if pd.notnull(row.get('Branch')) else "",
-                nuban=str(row['NUBAN']) if pd.notnull(row.get('NUBAN')) else "",
-                account_name=str(row['Account Name']) if pd.notnull(row.get('Account Name')) else "",
-                teller=str(row['Teller']) if pd.notnull(row.get('Teller')) else "",
-                transaction_date=str(row['Transaction Date']) if pd.notnull(row.get('Transaction Date')) else "",
-                financial_date=str(row['Financial Date']) if pd.notnull(row.get('Financial Date')) else ""
+        excel_file = ExcelFile.objects.get(id=file_id)
+        file_path = excel_file.file.path
+        df = pd.read_excel(file_path, parse_dates=['Transaction Date', 'Financial Date'])
+        if 'Narration' not in df.columns:
+            excel_file.delete()
+            raise ValueError("Excel file must contain a 'Narration' column")
+        for _, row in df.iterrows():
+            NarrationEntry.objects.create(
+                excel_file=excel_file,
+                debit=float(row.get('Debit', 0)),
+                credit=float(row.get('Credit', 0)),
+                entry_code=str(row.get('Entry Code', '')),
+                instrument_no=str(row.get('Instrument No.', '')),
+                client_ip_address=str(row.get('Client IP Address', '')),
+                narration=str(row.get('Narration', '')),
+                branch=str(row.get('Branch', '')),
+                nuban=str(row.get('NUBAN', '')),
+                account_name=str(row.get('Account Name', '')),
+                teller=str(row.get('Teller', '')),
+                transaction_date=row.get('Transaction Date'),
+                financial_date=row.get('Financial Date'),
+                has_credit=float(row.get('Credit', 0)) > 0
             )
-            for _, row in df.iterrows() if pd.notnull(row.get('Narration'))
-        ]
-        NarrationEntry.objects.bulk_create(entries)
-        logger.info(f"Successfully processed file: {excel_file_instance.file.name}")
-    except KeyError as e:
-        excel_file_instance.delete()
-        logger.error(f"Missing required column in {excel_file_instance.file.name}: {str(e)}")
-        raise
+        logger.info(f"Successfully processed file: {file_path}, ID: {file_id}")
+        os.remove(file_path)
+        excel_file.delete()
     except Exception as e:
-        excel_file_instance.delete()
-        logger.error(f"Error processing file {excel_file_instance.file.name}: {str(e)}")
+        logger.error(f"Error processing file ID {file_id}: {str(e)}")
+        if ExcelFile.objects.filter(id=file_id).exists():
+            ExcelFile.objects.get(id=file_id).delete()
         raise
