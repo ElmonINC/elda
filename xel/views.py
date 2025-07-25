@@ -67,7 +67,7 @@ def admin_xel(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 @require_POST
-def delete_excel(request, file_id):
+def delete_excel_file(request, file_id):
     try:
         file = get_object_or_404(ExcelFile, id=file_id)
         logger.info(f"Deleting file with ID: {file_id}, Path: {file.file.path}")
