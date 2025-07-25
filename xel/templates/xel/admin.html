@@ -1,48 +1,48 @@
 {% extends 'xel/admin_layout.html' %}
+{% load static %}
 
-{% block title %} Admin Page {% endblock %}
+{% block title %}Admin Page{% endblock %}
 {% block content %}
 <h2>Admin Content Management</h2>
 <h3>Uploaded Excel Files</h3>
 <ul>
-    {% if error %}
-        <li class="error">{{ error }}</li>
+    {% if message %}
+        <p class="success">{{ message }}</p>
     {% endif %}
 
-    {% if upload_form.error %}
+    {% if upload_form.errors %}
         <div class="error">
             <p>Please correct the error below</p>
-            <ul>
-                {% for field in upload_form %}
-                    {% if field.errors %}
-                        <li>{{ field.label }}: {{ field.errors|striptags }}</li>
-                    {% endif %}
-                {% endfor %}
-                {% if upload_form.non_field_errors %}
-                    <li>{{ upload_form.non_field_errors|striptags }}</li>
+            {% for field in upload_form %}
+                {% if field.errors %}
+                    <p>{{ field.label }}: {{ field.errors|striptags }}</p>
                 {% endif %}
-            </ul>
+            {% endfor %}
+            {% if upload_form.non_field_errors %}
+                <p>{{ upload_form.non_field_errors|striptags }}</p>
+            {% endif %}
         </div>
     {% endif %}
 
+<ul>
     {% for file in files %}
-        <div class="file-row" id="file-row-{{ file.id }}">
-            <span>{{ file.file.name }} (Uploaded on: {{ file.uoloaded_at }})</span>
+        <li class="file-row" id="file-row-{{ file.id }}">
+            {{ file.file.name }} (Uploaded on: {{ file.uoloaded_at }})
             <span class="delete-file" data-file-id="{{ file.id }}">Delete</span>
-        </div>
+        </li>
     {% empty %}
         <li> No files uploaded.</li>
     {% endfor %}
 </ul>
+
 <a href="#" id="hide_upload">Upload New Excel File</a>
 
-<div id="upload_form" style="display: none;">
-    <form method="post" enctype="multipart/form-data">
+    <form id="upload_form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ upload_form.as_p }}
         <button type="submit">Upload</button>
     </form> 
 
-</div>
+<script src="{% static 'xel/js/xel.js' %}"></script>
 {% endblock %}
 

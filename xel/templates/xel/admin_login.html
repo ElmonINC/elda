@@ -3,7 +3,7 @@
 {% block content %}
 <h2>Admin Login</h2>
 {% if error %}
-    <div style="color: red;">{{ error }}</div>
+    <p style="color: red;">{{ error }}</p>
 {% endif %}
 <form method="post">
     {% csrf_token %}

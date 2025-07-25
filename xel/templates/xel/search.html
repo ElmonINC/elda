@@ -16,12 +16,13 @@
         {% if results %}
             <ol>
             {% for res in results %}
-                <li>{{ res.narration }} <a href="{% url 'generate_pdf' narration_id=res.id %}" target="_blank">Print</a></li>
+                <li>{{ res.narration }} <a href="{% url 'generate_pdf' result.id %}" target="_blank">Print</a></li>
             {% endfor %}
             </ol>
         {% else %}
             <p>No matches found.</p>
         {% endif %}
     {% endif %}
+    <a href="{% url 'logout' %}">Logout</a>
 </div>
 {% endblock %}

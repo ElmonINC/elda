@@ -5,30 +5,8 @@
 {% block content %}
 <h2>Register</h2>
 {% if form.errors %}
-    <div class="error">
-        <p>Please correct the errors below:</p>
-        <ul>
-            {% for field in form %}
-                {% for error in field.errors %}
-                    <li>{{ field.label }}: {{ error }}</li>
-                {% endfor %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-{% endif %}
-{% if success_message %}
-    <div class="success">
-        <p>{{ success_message }}</p>
-    </div>
-{% endif %}
-
-{% if error_message %}
-    <div class="error">
-        <p>{{ error_message }}</p>
-    </div>
+    <p style="color: red;">Please correct the errors below:</p>
+    {{ form.errors }}
 {% endif %}
 
 <form method="post">
@@ -36,4 +14,6 @@
     {{ form.as_p }}
     <button type="submit">Register</button>
 </form>
+<p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+
 {% endblock %}

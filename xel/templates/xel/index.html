@@ -1,23 +1,9 @@
 {% extends "xel/layout.html" %}
 {% load static %}
 
-
 {% block content %}
-<h2>Search Narration</h2>
-
-
-<div id="results_box" class="{% if show_results %}show{% else %}hide{% endif %}" style="margin-top:20px;">
-    {% if show_results %}
-        <h3>Results for "{{ query }}"</h3>
-        {% if results %}
-            <ol>
-            {% for res in results %}
-                <li>{{ res }}</li>
-            {% endfor %}
-            </ol>
-        {% else %}
-            <p>No matches found.</p>
-        {% endif %}
-    {% endif %}
-</div>
+<h1>Welcome</h1>
+<p><a href="{% url 'search_narration' %}">Go to Search</a></p>
+<p><a href="{% url 'admin_xel' %}">Go to Admin Dashboard</a></p>
+<p><a href="{% url 'logout' %}">Logout</a></p>
 {% endblock %}

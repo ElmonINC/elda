@@ -59,7 +59,7 @@ ROOT_URLCONF = 'elda.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -79,14 +79,11 @@ WSGI_APPLICATION = 'elda.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'elda_db',
-        'USER': 'ELMON',
-        'PASSWORD': 'EliwonG12@',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default='postgres://ELMON:EliwonG12@localhost:5432/elda_db',
+        conn_max_age=600,
+        ssl_require=False
+    )
 }
 
 
@@ -125,30 +122,30 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Cache settings
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',  # Use Redis as the cache backend
-        'LOCATION': 'redis://127.0.0.1:6379/1', # Use Redis for caching
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',  # Use the default Redis client
-            'PARSER_CLASS': 'redis.connection.PythonParser',  # Use Python parser for Redis responses
-            'TIMEOUT': 360000,  # Cache timeout in seconds
-        }
-    }
-}
 
 # Celery settings to offload heavy tasks like file uploads to be a background task
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL', 'redis://127.0.1:6379/0')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
+
+# Caches redis for session and other data
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379/1'),
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
 
 # Increase file upload size limit
 DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50MB
@@ -158,10 +155,6 @@ FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50MB
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/xel/search/'
-LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 
 # CSRF settings
@@ -179,7 +172,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'debug.log',
+            'filename': os.path.join(BASE_DIR, 'logs', 'django_debug.log'),
         },
     },
     'loggers': {

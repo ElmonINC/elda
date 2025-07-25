@@ -1,17 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
-    var Btn = document.getElementById('hide_upload');
+    var btn = document.getElementById('hide_upload');
     var form = document.getElementById('upload_form');
-    if (Btn && form) {
-        Btn.addEventListener('click', function(e) {
+    if (btn && form) {
+        btn.addEventListener('click', function(e) {
             e.preventDefault();
-            if (form.style.display === 'none' || formD.style.display === '') {
-                form.style.display = 'block';
-            } else {
-                form.style.display = 'none';
-            }
+            form.style.display = form.style.display === 'none' || form.style.display === '' ? 'block' : 'none';
         });
     }
-    // Bind click event to delete buttons
+
     document.querySelectorAll('.delete-file').forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
@@ -21,7 +17,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Function to get the value of a cookie by name
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -37,7 +32,6 @@ function getCookie(name) {
     return cookieValue;
 }
 
-// Function to delete a file by its ID
 function deleteFile(fileId) {
     if (confirm('Are you sure you want to delete this file?')) {
         fetch(`/xel/admin/delete/${fileId}/`, {
@@ -46,6 +40,7 @@ function deleteFile(fileId) {
                 'X-CSRFToken': getCookie('csrftoken')
             }
         })
+        .then(response => response.json())
         .then(data => {
             if (data.success) {
                 document.getElementById(`file-row-${fileId}`).remove();
@@ -59,4 +54,4 @@ function deleteFile(fileId) {
             alert('Error deleting file: ' + error.message);
         });
     }
-}  
+}

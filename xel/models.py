@@ -7,9 +7,6 @@ class ExcelFile(models.Model):
     def __str__(self):
         return self.file.name
 
-    def __str__(self):
-        return f"{self.first_name} {self.last_name} - {self.status}"
-
 class NarrationEntry(models.Model):
     excel_file = models.ForeignKey(ExcelFile, on_delete=models.CASCADE)
     narration = models.TextField(db_index=True)
