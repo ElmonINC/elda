@@ -22,7 +22,7 @@ class ExcelUploadForm(forms.ModelForm):
         if not file.name.endswith(('.xlsx', '.xls')):
             raise forms.ValidationError("File must be an Excel file (.xlsx or .xls)")
         try:
-            df = pd.read_excel(file)
+            df = pd.read_excel(file, dtype_backend='numpy_nullable')
             if 'Narration' not in df.columns:
                 raise forms.ValidationError("The uploaded file must contain a 'Narration' column")
         except Exception as e:

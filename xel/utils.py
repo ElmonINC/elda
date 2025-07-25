@@ -3,8 +3,8 @@ from reportlab.pdfgen import canvas
 from PyPDF2 import PdfReader, PdfWriter
 import io
 import os
-from django.conf import settings
 import logging
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +31,7 @@ def generate_pdf(data):
     new_pdf = PdfReader(buffer)
     output = PdfWriter()
     
-    background_path = os.path.join(settings.STATIC_ROOT, 'xel/background.pdf')
+    background_path = os.path.join(settings.STATIC_ROOT, 'xel/image/Teller.png')
     if os.path.exists(background_path):
         background_pdf = PdfReader(open(background_path, 'rb'))
         page = new_pdf.pages[0]
