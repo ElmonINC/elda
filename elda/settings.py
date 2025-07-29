@@ -24,8 +24,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-=jmluvll%)a7$pw!llm%2^x=#+9o*w_re5287$j#d2=lyk$wa3'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = ['elda.onrender.com', 'localhost', '127.0.0.1:8000', '127.0.0.1']
 
@@ -54,6 +52,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
 ROOT_URLCONF = 'elda.urls'
 
 TEMPLATES = [
@@ -78,14 +78,15 @@ WSGI_APPLICATION = 'elda.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+print(dj_database_url.config())
+# Use dj_database_url to configure the database from environment variables
 DATABASES = {
     'default': dj_database_url.config(
         default='postgres://ELMON:EliwonG12@@localhost:5432/elda_db',
         conn_max_age=600,
-        ssl_require=False
+        ssl_require=True
     )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
