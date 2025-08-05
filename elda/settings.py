@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=jmluvll%)a7$pw!llm%2^x=#+9o*w_re5287$j#d2=lyk$wa3'
+SECRET_KEY = config('SECRET_KEY')
 
 
 ALLOWED_HOSTS = ['elda.onrender.com', 'localhost', '127.0.0.1:8000', '127.0.0.1']
@@ -79,12 +80,10 @@ WSGI_APPLICATION = 'elda.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 print(dj_database_url.config())
+
 # Use dj_database_url to configure the database from environment variables
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgres://ELMON:EliwonG12@@localhost:5432/elda_db',
-        conn_max_age=600,
-        ssl_require=True
+    'default': dj_database_url.config(default=config('DATABASE_URL', default='postgres://localhost:5432/elda_db')
     )
 }
 
@@ -124,6 +123,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
