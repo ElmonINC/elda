@@ -83,7 +83,7 @@ print(dj_database_url.config())
 
 # Use dj_database_url to configure the database from environment variables
 DATABASES = {
-    'default': dj_database_url.config(default=config('DATABASE_URL', default='postgres://localhost:5432/elda_db')
+    'default': dj_database_url.config(default=config('DATABASE_URL', default='postgres://ELMON:EliwonG12@@localhost:5432/elda_db')
     )
 }
 

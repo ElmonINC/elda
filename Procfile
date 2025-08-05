@@ -1,1 +1,0 @@
-web: gunicorn elda.wsgi.application --log-file -
