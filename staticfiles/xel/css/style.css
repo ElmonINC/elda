@@ -1,0 +1,48 @@
+#upload_form {
+    display: none;
+    margin-top: 20px;
+    padding: 16px;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    border-radius: 6px;
+    max-width: 400px;
+}
+#hide_upload {
+    display: inline-block;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+#hide_upload:hover {
+    color: #0056b3;
+}
+.success {
+    color: green;
+}
+.error {
+    color: red;
+}
+.file-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+    width: 30rem;
+    padding: 8px;
+    margin-bottom: 4px;
+}
+.delete-file {
+    color: red;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+.delete-file:hover {
+    background-color: #f5c6cb;
+    color: #721c24;
+}

@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: elda
+    env: python
+    buildCommand: python manage.py collectstatic --noinput
+    startCommand: gunicorn elda.wsgi:application
+    static:
+      directory: staticfiles
+      urlPrefix: /static/

@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from django.views.defaults import page_not_found
 from xel import views
 
 urlpatterns = [
@@ -30,3 +31,5 @@ urlpatterns = [
     path('create_admin/', views.create_initial_admin),
     path('health_check/', views.health_check),
 ]
+
+handler404 = lambda request, exception: views.health_check(request) if request.path == '/health_check/' else page_not_found(request, exception)
