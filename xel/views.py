@@ -13,6 +13,7 @@ from .utils import generate_pdf
 from django.db.models import Q
 import logging
 import time
+from .task import process_excel_file
 
 logger = logging.getLogger(__name__)
 # creating a temporary admin account if it doesn't exist
@@ -82,7 +83,6 @@ def admin_xel(request):
         if upload_form.is_valid():
             excel_file_instance = upload_form.save()
             logger.info(f"File uploaded: {excel_file_instance.file.name}, ID: {excel_file_instance.id}")
-            from .tasks import process_excel_file
             process_excel_file.delay(excel_file_instance.id)
             return render(request, 'xel/admin.html', {
                 'files': files,
