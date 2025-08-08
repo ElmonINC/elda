@@ -84,7 +84,9 @@ DEBUG = False
 
 # Use dj_database_url to configure the database from environment variables
 DATABASES = {
-    'default': dj_database_url.config(default=config('DATABASE_URL', default='postgres://ELMON:EliwonG12@@localhost:5432/elda_db')
+    'default': dj_database_url.config(default=config('DATABASE_URL', default='postgres://ELMON:EliwonG12@@localhost:5432/elda_db'),
+    conn_max_age=600,  # 10 minutes
+    ssl_require=True,  # Use SSL for database connections
     )
 }
 

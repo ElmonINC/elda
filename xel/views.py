@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse_lazy
 from django.views import generic
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.core.cache import cache
 from django.contrib.auth import logout as auth_logout, authenticate, login
 from django.views.decorators.http import require_POST
@@ -18,34 +18,27 @@ from .task import process_excel_file
 logger = logging.getLogger(__name__)
 # creating a temporary admin account if it doesn't exist
 from django.contrib.auth import get_user_model
-from django.core.management import call_command
 import os
 
 def create_initial_admin(request):
+    # Security token check (set in Render environment)
+    if request.GET.get('token') != os.environ.get('ADMIN_TOKEN'):
+        return HttpResponseBadRequest("Invalid token")
+    
     User = get_user_model()
     
-    # Security check: Only create if no admins exist
-    if not User.objects.filter(is_superuser=True).exists():
-        # Get credentials from environment variables
-        username = os.environ.get('ADMIN_USER', 'admin')
-        email = os.environ.get('ADMIN_EMAIL', 'admin@example.com')
-        password = os.environ.get('ADMIN_PASSWORD')
-        
-        # Create the superuser
-        call_command(
-            "createsuperuser",
-            "--noinput",
-            f"--username={username}",
-            f"--email={email}"
-        )
-        
-        # Set the password
-        user = User.objects.get(username=username)
-        user.set_password(password)
-        user.save()
-        
-        return HttpResponse(f"Admin account '{username}' created successfully!")
-    return HttpResponse("Admin account already exists", status=400)
+    if User.objects.filter(is_superuser=True).exists():
+        return HttpResponse("Admin already exists")
+    
+    # Create superuser
+    User.objects.create_superuser(
+        username=os.environ['ADMIN_USERNAME'],
+        email=os.environ['ADMIN_EMAIL'],
+        password=os.environ['ADMIN_PASSWORD']
+    )
+    return HttpResponse("Admin account created successfully!")
+
+
 
 # RegisterView for user registration
 class RegisterView(generic.CreateView):
