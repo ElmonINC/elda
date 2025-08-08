@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from xel import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +25,7 @@ urlpatterns = [
     path('xel/', include('xel.urls')),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+
+    # In your_project/urls.py
+    path('create_admin/', views.create_initial_admin),
 ]

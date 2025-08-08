@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
-    'data_elda',
     'xel',
+    'data_elda',
 ]
 
 MIDDLEWARE = [
@@ -75,11 +75,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'elda.wsgi.application'
 
+# debug toolbar settings
+DEBUG = False
+
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-print(dj_database_url.config())
 
 # Use dj_database_url to configure the database from environment variables
 DATABASES = {
