@@ -28,4 +28,5 @@ urlpatterns = [
 
     # In your_project/urls.py
     path('create_admin/', views.create_initial_admin),
+    path('health_check/', views.health_check),
 ]

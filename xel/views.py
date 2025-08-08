@@ -14,12 +14,14 @@ from django.db.models import Q
 import logging
 import time
 from .task import process_excel_file
+from django.views.decorators.http import require_GET
 
 logger = logging.getLogger(__name__)
 # creating a temporary admin account if it doesn't exist
 from django.contrib.auth import get_user_model
 import os
 
+@require_GET
 def create_initial_admin(request):
     # Security token check (set in Render environment)
     if request.GET.get('token') != os.environ.get('ADMIN_TOKEN'):
@@ -37,6 +39,14 @@ def create_initial_admin(request):
         password=os.environ['ADMIN_PASSWORD']
     )
     return HttpResponse("Admin account created successfully!")
+
+@require_GET
+def health_check(request):
+    """
+    Simple health check endpoint to verify that the service is running.
+    """
+    return HttpResponse({"Status": "OK", "service": "elda"}, content_type="text/plain", status=200)
+
 
 
 
