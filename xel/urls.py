@@ -12,5 +12,5 @@ urlpatterns = [
     path('search/', views.search_narration, name='search_narration'),
     path('generate_pdf/<int:narration_id>/', views.generate_pdf_view, name='generate_pdf'),
     path('health_check/', views.health_check, name='health_check'),
-    path('xel/create_initial_admin/', views.create_initial_admin, name='create_initial_admin'),
+    path('create_initial_admin/', views.create_initial_admin, name='create_initial_admin'),
 ]

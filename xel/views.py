@@ -47,9 +47,9 @@ def create_initial_admin(request): # View to create the initial admin account if
 @require_GET
 def health_check(request): # Simple health check endpoint to verify that the service is running
     """
-    Simple health check endpoint to verify that the service is running.
+    Simple health check endpoint to verify that the service is running. 
     """
-    return HttpResponse({"Status": "OK", "service": "elda"}, content_type="text/plain", status=200)
+    return JsonResponse({"Status": "OK", "service": "elda"}, status=200)
 
 class RegisterView(generic.CreateView): # View to handle user registration
     form_class = UserCreationForm
