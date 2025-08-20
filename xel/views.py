@@ -17,6 +17,9 @@ from .task import process_excel_file
 from django.views.decorators.http import require_GET
 from django.core.paginator import Paginator
 import os
+from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
 
 logger = logging.getLogger(__name__)
 
@@ -26,9 +29,11 @@ def create_initial_admin(request): # View to create the initial admin account if
     if request.GET.get('token') != os.environ.get('ADMIN_TOKEN'):
         return HttpResponseBadRequest("Invalid token")
     
+    # Get the user model
     User = get_user_model()
+    # Check if an admin account already exists
     
-    if User.objects.filter(is_superuser=True).exists():
+    if User.objects.filter(is_superuser=True).exists(): # Check if an admin account already exists
         return HttpResponse("Admin already exists")
     
     # Create superuser
