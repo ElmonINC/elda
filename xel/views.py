@@ -15,14 +15,13 @@ import logging
 import time
 from .task import process_excel_file
 from django.views.decorators.http import require_GET
-
-logger = logging.getLogger(__name__)
-# creating a temporary admin account if it doesn't exist
-from django.contrib.auth import get_user_model
+from django.core.paginator import Paginator
 import os
 
+logger = logging.getLogger(__name__)
+
 @require_GET
-def create_initial_admin(request):
+def create_initial_admin(request): # View to create the initial admin account if it doesn't exist
     # Security token check (set in Render environment)
     if request.GET.get('token') != os.environ.get('ADMIN_TOKEN'):
         return HttpResponseBadRequest("Invalid token")
@@ -41,26 +40,22 @@ def create_initial_admin(request):
     return HttpResponse("Admin account created successfully!")
 
 @require_GET
-def health_check(request):
+def health_check(request): # Simple health check endpoint to verify that the service is running
     """
     Simple health check endpoint to verify that the service is running.
     """
     return HttpResponse({"Status": "OK", "service": "elda"}, content_type="text/plain", status=200)
 
-
-
-
-# RegisterView for user registration
-class RegisterView(generic.CreateView):
+class RegisterView(generic.CreateView): # View to handle user registration
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'registration/register.html'
 
-def index(request):
+def index(request): # View to render the index page
     return redirect('search_narration')
 
 def admin_login(request):
-    error = None
+    error = None    # View to handle admin login
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -73,12 +68,12 @@ def admin_login(request):
     return render(request, 'xel/admin_login.html', {'error': error})
 
 @login_required
-def logout(request):
+def logout(request): # View to log out the user
     auth_logout(request)
     return redirect('index')
 
 @user_passes_test(lambda u: u.is_superuser)
-def admin_xel(request):
+def admin_xel(request): # View to manage uploaded Excel files
     files = ExcelFile.objects.all()
     upload_form = ExcelUploadForm()
     if request.method == 'POST':
@@ -101,7 +96,7 @@ def admin_xel(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 @require_POST
-def delete_excel_file(request, file_id):
+def delete_excel_file(request, file_id): # View to delete an uploaded Excel file
     try:
         file = get_object_or_404(ExcelFile, id=file_id)
         logger.info(f"Deleting file with ID: {file_id}, Path: {file.file.path}")
@@ -113,7 +108,7 @@ def delete_excel_file(request, file_id):
         return JsonResponse({'success': False, 'error': str(e)}, status=400)
 
 @login_required
-def search_narration(request):
+def search_narration(request): # View to search for narration entries
     results = []
     query = ""
     show_results = False
@@ -131,7 +126,7 @@ def search_narration(request):
                     query_filter = Q(has_credit=True)
                     for word in query_words:
                         query_filter &= Q(narration__icontains=word)
-                    entries = NarrationEntry.objects.filter(query_filter)[:100]
+                    entries = NarrationEntry.objects.filter(query_filter)
                     results = []
                     for entry in entries:
                         narration = entry.narration or ""
@@ -154,15 +149,21 @@ def search_narration(request):
                 else:
                     logger.info(f"Cache hit for query: {query}, Time: {time.time() - start_time:.2f} seconds")
                 show_results = True
+
+    # Add pagination
+    paginator = Paginator(results, 5)  # Show 10 results per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     return render(request, 'xel/search.html', {
         'form': form,
-        'results': results,
+        'results': page_obj,
         'query': query,
         'show_results': show_results,
+        'page_obj': page_obj,
     })
 
-@login_required
-def generate_pdf_view(request, narration_id):
+@login_required 
+def generate_pdf_view(request, narration_id): # View to generate PDF for a specific narration entry
     try:
         entry = NarrationEntry.objects.get(id=narration_id)
         data = {
@@ -179,4 +180,6 @@ def generate_pdf_view(request, narration_id):
         return response
     except NarrationEntry.DoesNotExist:
         logger.error(f"NarrationEntry with id {narration_id} not found")
-        return HttpResponse("Entry not found", status=404)
+        return render(request, 'xel/error.html', {
+            'error_message': 'The requested entry was not found.',
+        }, status=404)

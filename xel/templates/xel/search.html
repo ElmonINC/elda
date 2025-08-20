@@ -1,7 +1,6 @@
 {% extends "xel/layout.html" %}
 {% load static %}
 
-
 {% block content %}
 <h2>Search Narration</h2>
 <form method="post">
@@ -10,19 +9,40 @@
     <button type="submit">Search</button>
 </form>
 
-<div id="results_box" class="{% if show_results %}show{% else %}hide{% endif %}" style="margin-top:20px;">
-    {% if show_results %}
-        <h3>Results for "{{ query }}"</h3>
-        {% if results %}
-            <ol>
+{% if show_results %}
+    <h3>Results for "{{ query }}"</h3>
+    {% if results %}
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Narration</th>
+                <th>Action</th>
+            </tr>
             {% for res in results %}
-                <li>{{ res.narration }} <a href="{% url 'generate_pdf' result.id %}" target="_blank">Print</a></li>
+                <tr>
+                    <td>{{ res.number }}</td>
+                    <td>{{ res.narration }}</td>
+                    <td><a href="{% url 'generate_pdf' res.id %}">Print</a></td>
+                </tr>
             {% endfor %}
-            </ol>
-        {% else %}
-            <p>No matches found.</p>
+        </table>
+        <!-- Pagination controls -->
+        {% if page_obj.has_other_pages %}
+            <div class="pagination">
+                <span>
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    {% endif %}
+                    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                    {% endif %}
+                </span>
+            </div>
         {% endif %}
+    {% else %}
+        <p>No matches found.</p>
     {% endif %}
-    <a href="{% url 'logout' %}">Logout</a>
-</div>
+{% endif %}
+<a href="{% url 'logout' %}">Logout</a>
 {% endblock %}
