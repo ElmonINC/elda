@@ -21,7 +21,9 @@ def generate_pdf(data):
     }
     
     for field, (x, y) in field_positions.items():
-        value = str(data.get(field, 'N/A')).split('by', 1)[1].strip() if field == 'narration' and 'by' in str(data.get(field, '')) else str(data.get(field, 'N/A'))
+        value = str(data.get(field, 'N/A'))
+        if field == 'narration':
+            value = value.split('by', 1)[1].strip() if 'by' in value.lower() else value
         c.drawString(x, y, value[:100])
     
     c.showPage()

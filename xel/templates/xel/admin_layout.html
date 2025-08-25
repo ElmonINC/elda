@@ -11,8 +11,8 @@
 </head>
 <body>
     <div>
-        {% if user.is_authenticated %}
-            Welcome, {{ user.username }}. 
+        {% if user.is_authenticated and user.userprofile.is_admin %}
+            <p>Welcome, {{ user.username }}.</p>
         {% else %}
             <a href="{% url 'admin_login' %}">Login</a>
         {% endif %}

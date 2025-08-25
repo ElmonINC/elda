@@ -3,12 +3,12 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse_lazy
 from django.views import generic
-from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponse
 from django.core.cache import cache
 from django.contrib.auth import logout as auth_logout, authenticate, login
 from django.views.decorators.http import require_POST
 from .forms import NarrationSearchForm, ExcelUploadForm
-from .models import ExcelFile, NarrationEntry
+from .models import ExcelFile, NarrationEntry, UserProfile
 from .utils import generate_pdf
 from django.db.models import Q
 import logging
@@ -16,33 +16,12 @@ import time
 from .task import process_excel_file
 from django.views.decorators.http import require_GET
 from django.core.paginator import Paginator
-import os
 from django.contrib.auth.models import User
-from django.contrib.auth import get_user_model
-
 
 logger = logging.getLogger(__name__)
 
-@require_GET
-def create_initial_admin(request): # View to create the initial admin account if it doesn't exist
-    # Security token check (set in Render environment)
-    if request.GET.get('token') != os.environ.get('ADMIN_TOKEN'):
-        return HttpResponseBadRequest("Invalid token")
-    
-    # Get the user model
-    User = get_user_model()
-    # Check if an admin account already exists
-    
-    if User.objects.filter(is_superuser=True).exists(): # Check if an admin account already exists
-        return HttpResponse("Admin already exists")
-    
-    # Create superuser
-    User.objects.create_superuser(
-        username=os.environ['ADMIN_USERNAME'],
-        email=os.environ['ADMIN_EMAIL'],
-        password=os.environ['ADMIN_PASSWORD']
-    )
-    return HttpResponse("Admin account created successfully!")
+def is_admin(user):
+    return hasattr(user, 'userprofile') and user.userprofile.is_admin
 
 @require_GET
 def health_check(request): # Simple health check endpoint to verify that the service is running
@@ -56,6 +35,11 @@ class RegisterView(generic.CreateView): # View to handle user registration
     success_url = reverse_lazy('login')
     template_name = 'registration/register.html'
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        UserProfile.objects.create(user=self.object, is_admin=False)  # Create UserProfile for new user
+        return response
+
 def index(request): # View to render the index page
     return redirect('search_narration')
 
@@ -65,7 +49,7 @@ def admin_login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
-        if user is not None and user.is_superuser:
+        if user is not None and hasattr(user, 'userprofile') and user.userprofile.is_admin:
             login(request, user)
             return redirect('admin_xel')
         else:
@@ -77,7 +61,7 @@ def logout(request): # View to log out the user
     auth_logout(request)
     return redirect('index')
 
-@user_passes_test(lambda u: u.is_superuser)
+@user_passes_test(is_admin)
 def admin_xel(request): # View to manage uploaded Excel files
     files = ExcelFile.objects.all()
     upload_form = ExcelUploadForm()
@@ -85,39 +69,24 @@ def admin_xel(request): # View to manage uploaded Excel files
         upload_form = ExcelUploadForm(request.POST, request.FILES)
         if upload_form.is_valid():
             excel_file_instance = upload_form.save()
-            logger.info(f"File uploaded: {excel_file_instance.file.name}, ID: {excel_file_instance.id}")
+            # Trigger Celery task to process the file
             process_excel_file.delay(excel_file_instance.id)
             return render(request, 'xel/admin.html', {
                 'files': files,
                 'upload_form': upload_form,
-                'message': 'File uploaded and queued for processing'
+                'message': 'File uploaded successfully and is being processed.'
             })
-        else:
-            logger.error(f"File upload failed: {upload_form.errors}")
     return render(request, 'xel/admin.html', {
         'files': files,
-        'upload_form': upload_form,
+        'upload_form': upload_form
     })
 
-@user_passes_test(lambda u: u.is_superuser)
-@require_POST
-def delete_excel_file(request, file_id): # View to delete an uploaded Excel file
-    try:
-        file = get_object_or_404(ExcelFile, id=file_id)
-        logger.info(f"Deleting file with ID: {file_id}, Path: {file.file.path}")
-        file.delete()
-        logger.info(f"File with ID: {file_id} deleted successfully")
-        return JsonResponse({'success': True, 'file_id': file_id})
-    except Exception as e:
-        logger.error(f"Error deleting file ID {file_id}: {str(e)}")
-        return JsonResponse({'success': False, 'error': str(e)}, status=400)
-
 @login_required
-def search_narration(request): # View to search for narration entries
-    results = []
-    query = ""
+def search_narration(request):
     show_results = False
     form = NarrationSearchForm()
+    results = []
+    query = ''
     if request.method == 'POST':
         form = NarrationSearchForm(request.POST)
         if form.is_valid():
@@ -135,18 +104,17 @@ def search_narration(request): # View to search for narration entries
                     results = []
                     for entry in entries:
                         narration = entry.narration or ""
-                        if 'by' in narration.lower():
-                            person = narration.split('by', 1)[1].strip()
-                            if person:
-                                results.append({
-                                    'id': entry.id,
-                                    'person': person,
-                                    'narration': narration,
-                                    'credit': entry.credit,
-                                    'account_name': entry.account_name,
-                                    'financial_date': entry.financial_date,
-                                    'nuban': entry.nuban
-                                })
+                        person = narration.split('by', 1)[1].strip() if 'by' in narration.lower() else narration
+                        if person:
+                            results.append({
+                                'id': entry.id,
+                                'person': person,
+                                'narration': narration,
+                                'credit': entry.credit,
+                                'account_name': entry.account_name,
+                                'financial_date': entry.financial_date,
+                                'nuban': entry.nuban
+                            })
                     results = sorted(results, key=lambda x: x['person'].lower())
                     results = [{'number': i+1, **result} for i, result in enumerate(results)]
                     cache.set(cache_key, results, timeout=3600)
@@ -156,7 +124,7 @@ def search_narration(request): # View to search for narration entries
                 show_results = True
 
     # Add pagination
-    paginator = Paginator(results, 5)  # Show 10 results per page
+    paginator = Paginator(results, 5)  # Show 5 results per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'xel/search.html', {
@@ -171,6 +139,10 @@ def search_narration(request): # View to search for narration entries
 def generate_pdf_view(request, narration_id): # View to generate PDF for a specific narration entry
     try:
         entry = NarrationEntry.objects.get(id=narration_id)
+        # Ensure user has access (e.g., admin or entry is public)
+        if not (hasattr(request.user, 'userprofile') and request.user.userprofile.is_admin):
+            # Add logic here if entries are tied to users; for now, allow all logged-in users
+            pass
         data = {
             'narration': entry.narration,
             'credit': entry.credit,

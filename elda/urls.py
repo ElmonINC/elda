@@ -18,18 +18,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from django.views.defaults import page_not_found
-from xel import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('data_elda/', include('data_elda.urls')),
     path('xel/', include('xel.urls')),
-    path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
-
-    
-    # In your_project/urls.py
-    path('health_check/', views.health_check),
 ]
-
-handler404 = lambda request, exception: views.health_check(request) if request.path == '/health_check/' else page_not_found(request, exception)
+# Custom error handlers
+handler403 = 'elda.views.permission_denied'
+handler404 = page_not_found

@@ -13,18 +13,22 @@
     <h3>Results for "{{ query }}"</h3>
     {% if results %}
         <table>
-            <tr>
-                <th>#</th>
-                <th>Narration</th>
-                <th>Action</th>
-            </tr>
-            {% for res in results %}
+            <thead>
                 <tr>
-                    <td>{{ res.number }}</td>
-                    <td>{{ res.narration }}</td>
-                    <td><a href="{% url 'generate_pdf' res.id %}">Print</a></td>
+                    <th>#</th>
+                    <th>Narration</th>
+                    <th>Action</th>
                 </tr>
-            {% endfor %}
+            </thead>
+            <tbody>
+                {% for res in results %}
+                    <tr>
+                        <td>{{ res.number }}</td>
+                        <td>{{ res.narration }}</td>
+                        <td><a href="{% url 'generate_pdf' res.id %}" class="btn">Print</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
         <!-- Pagination controls -->
         {% if page_obj.has_other_pages %}
