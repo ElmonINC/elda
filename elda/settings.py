@@ -91,6 +91,8 @@ DATABASES = {
     )
 }
 
+# handler403 = 'xel.views.permission_denied'
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 

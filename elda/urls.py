@@ -25,5 +25,4 @@ urlpatterns = [
     path('xel/', include('xel.urls')),
 ]
 # Custom error handlers
-handler403 = 'elda.views.permission_denied'
 handler404 = page_not_found

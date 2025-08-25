@@ -17,6 +17,9 @@ from .task import process_excel_file
 from django.views.decorators.http import require_GET
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
+from django.conf import settings
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseForbidden
 
 logger = logging.getLogger(__name__)
 
@@ -65,21 +68,35 @@ def logout(request): # View to log out the user
 def admin_xel(request): # View to manage uploaded Excel files
     files = ExcelFile.objects.all()
     upload_form = ExcelUploadForm()
+    message = None
     if request.method == 'POST':
         upload_form = ExcelUploadForm(request.POST, request.FILES)
         if upload_form.is_valid():
             excel_file_instance = upload_form.save()
             # Trigger Celery task to process the file
             process_excel_file.delay(excel_file_instance.id)
-            return render(request, 'xel/admin.html', {
-                'files': files,
-                'upload_form': upload_form,
-                'message': 'File uploaded successfully and is being processed.'
-            })
+            message = 'File uploaded successfully and is being processed.'
     return render(request, 'xel/admin.html', {
         'files': files,
-        'upload_form': upload_form
+        'upload_form': upload_form,
+        'message': message
     })
+
+@require_POST
+@login_required
+@user_passes_test(is_admin)
+def delete_excel_file(request, file_id):
+    """AJAX endpoint to delete an ExcelFile instance."""
+    try:
+        file_instance = get_object_or_404(ExcelFile, id=file_id)
+        # Optionally, delete related NarrationEntry objects
+        NarrationEntry.objects.filter(excel_file=file_instance).delete()
+        file_instance.delete()
+        logger.info(f"ExcelFile {file_id} deleted by {request.user.username}")
+        return JsonResponse({'success': True})
+    except Exception as e:
+        logger.error(f"Error deleting ExcelFile {file_id}: {str(e)}")
+        return JsonResponse({'success': False, 'error': str(e)})
 
 @login_required
 def search_narration(request):
