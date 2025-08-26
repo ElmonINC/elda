@@ -33,7 +33,7 @@ def process_excel_file(file_id):
                 financial_date=row.get('Financial Date'),
                 has_credit=float(row.get('Credit', 0) or 0) > 0
             ))
-        NarrationEntry.objects.bulk_create(entries)
+        NarrationEntry.objects.bulk_create(entries, batch_size=1000) # Adjust batch_size as needed
         logger.info(f"Successfully processed file: {file_path}, ID: {file_id}")
         os.remove(file_path)
         excel_file.delete()

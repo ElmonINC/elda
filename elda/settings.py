@@ -12,8 +12,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
-import dj_database_url
+import environ
 from decouple import config
+
+env = environ.Env()
+environ.Env.read_env()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -85,10 +89,7 @@ DEBUG = False
 
 # Use dj_database_url to configure the database from environment variables
 DATABASES = {
-    'default': dj_database_url.config(default=config('DATABASE_URL', default='postgres://ELMON:EliwonG12@@localhost:5432/elda_db'),
-    conn_max_age=600,  # 10 minutes
-    ssl_require=True,  # Use SSL for database connections
-    )
+    'default': env.db('DATABASE_URL', default='postgres://ELMON:EliwonG12@@localhost:5432/elda_db'),
 }
 
 # handler403 = 'xel.views.permission_denied'
@@ -140,6 +141,7 @@ CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379/0')
 CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL', 'redis://127.0.1:6379/0')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
+CELERY_TASK_ALWAYS_EAGER = True  # For development, set to False in production
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 
