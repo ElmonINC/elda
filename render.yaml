@@ -8,6 +8,3 @@ services:
       python manage.py create_initial_admin
       python manage.py collectstatic --noinput
     startCommand: gunicorn elda.wsgi:application
-    static:
-      directory: staticfiles
-      urlPrefix: /static/
