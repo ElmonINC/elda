@@ -14,7 +14,7 @@ services:
       pip install -r requirements.txt
       python manage.py migrate
       python manage.py collectstatic --noinput
-    startCommand: gunicorn elda.wsgi:application
+    startCommand: python create_superuser.py && gunicorn elda.wsgi:application -c gunicorn_config.py  # 👈 use gunicorn config file
     envVars:
       - key: DATABASE_URL
         fromDatabase:
