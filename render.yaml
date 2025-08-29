@@ -4,7 +4,18 @@ services:
     env: python
     buildCommand: |
       pip install -r requirements.txt
+      pip install --upgrade pip
       python manage.py collectstatic --noinput
       python manage.py migrate
-      python manage.py create_initial_admin
-    startCommand: gunicorn --config gunicorn.conf.py elda.wsgi:application
+    startCommand: |
+      python create_superuser.py && gunicorn myproject.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: elda-db
+          property: connectionString
+
+databases:
+  - name: elda-db
+    type: postgresql
+    plan: free

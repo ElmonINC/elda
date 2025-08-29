@@ -12,11 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
-import environ
 from decouple import config
-
-env = environ.Env()
-environ.Env.read_env()
+import dj_database_url
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -89,7 +86,11 @@ DEBUG = False
 
 # Use dj_database_url to configure the database from environment variables
 DATABASES = {
-    'default': env.db('DATABASE_URL', default='postgres://ELMON:EliwonG12@@localhost:5432/elda_db'),
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True,
+    )
 }
 
 # handler403 = 'xel.views.permission_denied'
