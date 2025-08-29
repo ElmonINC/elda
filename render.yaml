@@ -10,6 +10,7 @@ services:
   - type: web
     name: elda
     env: python
+    plan: free   # 👈 make sure service is free
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
