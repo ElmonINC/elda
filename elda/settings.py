@@ -78,7 +78,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'elda.wsgi.application'
 
 # debug toolbar settings
-DEBUG = False
+DEBUG = False   # for production.
 
 
 # Database
@@ -86,8 +86,8 @@ DEBUG = False
 
 # Use dj_database_url to configure the database from environment variables
 DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL'),
+    "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
         conn_max_age=600,
         ssl_require=True,
     )
