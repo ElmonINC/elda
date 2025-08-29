@@ -3,12 +3,12 @@ services:
     name: elda
     env: python
     buildCommand: |
-      pip install -r requirements.txt
       pip install --upgrade pip
-      python manage.py collectstatic --noinput
+      pip install -r requirements.txt
       python manage.py migrate
+      python manage.py collectstatic --noinput
     startCommand: |
-      python create_superuser.py && gunicorn myproject.wsgi:application
+      python create_superuser.py && gunicorn elda.wsgi:application -c gunicorn_config.py
     envVars:
       - key: DATABASE_URL
         fromDatabase:
