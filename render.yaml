@@ -1,20 +1,26 @@
+databases:
+  - name: elda-db
+    databaseName: elda
+    user: elda_user
+    plan: free   # 👈 make sure database is free
+
 services:
   - type: web
     name: elda
     env: python
+    plan: free   # 👈 free web service
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
       python manage.py migrate
       python manage.py collectstatic --noinput
-    startCommand: |
-      python create_superuser.py && gunicorn elda.wsgi:application -c gunicorn_config.py
+    startCommand: gunicorn myproject.wsgi:application
     envVars:
       - key: DATABASE_URL
         fromDatabase:
           name: elda-db
           property: connectionString
-
-databases:
-  - name: elda-db
-    plan: free
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_SETTINGS_MODULE
+        value: elda.settings
