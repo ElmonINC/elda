@@ -18,4 +18,3 @@ services:
 databases:
   - name: elda-db
     type: postgresql
-    plan: free
