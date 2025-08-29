@@ -19,9 +19,9 @@ services:
       - key: DJANGO_SUPERUSER_USERNAME
         value: elmon
       - key: DJANGO_SUPERUSER_EMAIL
-        value: elmon@example.com
+        value: igwesmsn@gmail.com
       - key: DJANGO_SUPERUSER_PASSWORD
-        value: StrongPass123!
+        value: Dip1tip2Dwaka@#elW
       - key: DATABASE_URL
         fromDatabase:
           name: elda-db
