@@ -1,7 +1,7 @@
 databases:
   - name: elda-db
     databaseName: elda
-    user: elda_user
+    user: elmon
     plan: free   # 👈 make sure database is free
 
 services:
@@ -14,7 +14,7 @@ services:
       pip install -r requirements.txt
       python manage.py migrate
       python manage.py collectstatic --noinput
-    startCommand: gunicorn myproject.wsgi:application
+    startCommand: gunicorn elda.wsgi:application
     envVars:
       - key: DATABASE_URL
         fromDatabase:
